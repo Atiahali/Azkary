@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Misbahah</string>
+    <string name="timer_first_value">0</string>
+    <string name="top_value_text">Top Value:</string>
+</resources>
