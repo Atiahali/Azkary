@@ -1,13 +1,10 @@
 package com.misbahah.ui;
 
-import android.media.SoundPool;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.misbahah.R;
 import com.misbahah.Utilities.Constants;
 import com.misbahah.databinding.ActivityMainBinding;
 import com.misbahah.ui.main.MainViewModel;
