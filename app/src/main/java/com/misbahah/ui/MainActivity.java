@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        assignVariablestoViews();
+        assignVariablesViews();
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void assignVariablestoViews() {
+    private void assignVariablesViews() {
         counter = binding.contentMain.timer;
         topTimes = binding.contentMain.topTimes;
         progressBar = binding.contentMain.progressBar;
