@@ -1,6 +1,7 @@
 package com.misbahah.ui;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,30 +16,41 @@ public class MainActivity extends AppCompatActivity {
 
     private MainViewModel mViewModel;
 
+    private TextView timer;
+    private TextView topTimes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        assignVariabletoViews();
+
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
 
         long topValue = mViewModel.initAndGetPreferences(this).getLong(Constants.TOP_TIMES_OF_ZIKR_KEY, 0);
-        binding.contentMain.topTimes.setText(String.valueOf(topValue));
+        topTimes.setText(String.valueOf(topValue));
 
-        mViewModel.getTopTimes().observe(this, topTimes -> binding.contentMain.topTimes.setText(String.valueOf(topTimes)));
-        mViewModel.getCurrentTime().observe(this, currenValue -> binding.timer.setText(String.valueOf(currenValue)));
+        mViewModel.getTopTimes().observe(this, topTimes -> this.topTimes.setText(String.valueOf(topTimes)));
+        mViewModel.getCurrentTime().observe(this, currentValue -> timer.setText(String.valueOf(currentValue)));
 
-        binding.getRoot().setOnClickListener((v) -> {
+        binding.getRoot().setOnClickListener((v) -> incrementCounterByOne());
+    }
 
-            long newValue = Integer.parseInt(binding.timer.getText().toString()) + 1;
-            mViewModel.getCurrentTime().setValue(newValue);
+    private void incrementCounterByOne() {
+        long newValue = Integer.parseInt(timer.getText().toString()) + 1;
+        mViewModel.getCurrentTime().setValue(newValue);
 
-            mViewModel.updateTopTimes(
-                    getBaseContext(),
-                    Long.parseLong(binding.timer.getText().toString())
-            );
-        });
+        mViewModel.updateTopTimes(
+                getBaseContext(),
+                Long.parseLong(timer.getText().toString())
+        );
+    }
+
+    private void assignVariabletoViews() {
+        timer = binding.contentMain.timer;
+        topTimes = binding.contentMain.topTimes;
     }
 }
