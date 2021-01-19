@@ -36,17 +36,10 @@ public class MainActivity extends AppCompatActivity {
         mViewModel.getTopTimes().observe(this, topTimes -> this.topTimes.setText(String.valueOf(topTimes)));
         mViewModel.getCurrentTime().observe(this, currentValue -> timer.setText(String.valueOf(currentValue)));
 
-        binding.getRoot().setOnClickListener((v) -> incrementCounterByOne());
-    }
-
-    private void incrementCounterByOne() {
-        long newValue = Integer.parseInt(timer.getText().toString()) + 1;
-        mViewModel.getCurrentTime().setValue(newValue);
-
-        mViewModel.updateTopTimes(
-                getBaseContext(),
-                Long.parseLong(timer.getText().toString())
-        );
+        binding.getRoot().setOnClickListener((v) -> {
+            long newValue = Integer.parseInt(timer.getText().toString()) + 1;
+            mViewModel.incrementCounterByOne(getBaseContext(), newValue);
+        });
     }
 
     private void assignVariabletoViews() {

@@ -22,17 +22,23 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<Long> currentTime = new MutableLiveData<>();
     private SharedPreferences sharedPreferences;
 
+    public void incrementCounterByOne(Context context, long newValue) {
+        getCurrentTime().setValue(newValue);
 
-    public void updateTopTimes(@NonNull Context context, long times) {
-        if (times % 100 == 0) {
+        updateTopTimes(context, newValue);
+    }
+
+    public void updateTopTimes(@NonNull Context context, long currentValue) {
+        if (currentValue % 100 == 0) {
             playDoneRingtone(context);
         }
         initAndGetPreferences(context);
+
         long topTimes = sharedPreferences.getLong(Constants.TOP_TIMES_OF_ZIKR_KEY, 0);
-        if (times > topTimes) {
-            this.topTimes.setValue(times);
+        if (currentValue > topTimes) {
+            this.topTimes.setValue(currentValue);
             sharedPreferences.edit()
-                    .putLong(Constants.TOP_TIMES_OF_ZIKR_KEY, times)
+                    .putLong(Constants.TOP_TIMES_OF_ZIKR_KEY, currentValue)
                     .apply();
         }
     }
