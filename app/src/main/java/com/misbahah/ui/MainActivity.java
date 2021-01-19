@@ -1,7 +1,9 @@
 package com.misbahah.ui;
 
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,34 +18,57 @@ public class MainActivity extends AppCompatActivity {
 
     private MainViewModel mViewModel;
 
-    private TextView timer;
+    private TextView counter;
     private TextView topTimes;
+    private ProgressBar progressBar;
+    private long progr = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         assignVariablestoViews();
+
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
 
         long topValue = mViewModel.initAndGetPreferences(this).getLong(Constants.TOP_TIMES_OF_ZIKR_KEY, 0);
+
         topTimes.setText(String.valueOf(topValue));
+        setUpProgressBar(topValue);
 
         mViewModel.getTopTimes().observe(this, topTimes -> this.topTimes.setText(String.valueOf(topTimes)));
-        mViewModel.getCurrentTime().observe(this, currentValue -> timer.setText(String.valueOf(currentValue)));
+        mViewModel.getCurrentTime().observe(this, currentValue -> counter.setText(String.valueOf(currentValue)));
 
-        binding.getRoot().setOnClickListener((v) -> {
-            long newValue = Integer.parseInt(timer.getText().toString()) + 1;
-            mViewModel.incrementCounterByOne(getBaseContext(), newValue);
-        });
+        binding.getRoot().setOnClickListener((v) -> incrementCounterByOne());
+
+        binding.contentMain.buttonIncr.setOnClickListener((v) -> incrementCounterByOne());
+        binding.contentMain.buttonDecr.setOnClickListener((v) -> decrementCounterByOne());
+    }
+
+    private void incrementCounterByOne() {
+        long incrementedValue = Integer.parseInt(counter.getText().toString()) + 1;
+        mViewModel.incrementCounterByOne(getBaseContext(), incrementedValue);
+    }
+
+    private void decrementCounterByOne() {
+        long decrementedValue = Integer.parseInt(counter.getText().toString()) - 1;
+        mViewModel.decrementCounterByOne(decrementedValue);
+    }
+
+    private void setUpProgressBar(long topValue) {
+        try {
+            progressBar.setMax((int) topValue);
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void assignVariablestoViews() {
-        timer = binding.contentMain.timer;
+        counter = binding.contentMain.timer;
         topTimes = binding.contentMain.topTimes;
+        progressBar = binding.contentMain.progressBar;
     }
 }

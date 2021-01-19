@@ -22,10 +22,15 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<Long> currentTime = new MutableLiveData<>();
     private SharedPreferences sharedPreferences;
 
-    public void incrementCounterByOne(Context context, long newValue) {
-        getCurrentTime().setValue(newValue);
+    public void incrementCounterByOne(Context context, long incrementedValue) {
+        getCurrentTime().setValue(incrementedValue);
 
-        updateTopTimes(context, newValue);
+        updateTopTimes(context, incrementedValue);
+    }
+
+    public void decrementCounterByOne(long decrementedValue) {
+        if(decrementedValue >= 0)
+            getCurrentTime().setValue(decrementedValue);
     }
 
     public void updateTopTimes(@NonNull Context context, long currentValue) {
