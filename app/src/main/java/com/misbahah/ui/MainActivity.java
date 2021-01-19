@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView counter;
     private TextView topTimes;
     private ProgressBar progressBar;
-    private long progr = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +29,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         assignVariablestoViews();
 
-
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-
         long topValue = mViewModel.initAndGetPreferences(this).getLong(Constants.TOP_TIMES_OF_ZIKR_KEY, 0);
-
         topTimes.setText(String.valueOf(topValue));
         setUpProgressBar(topValue);
 
         mViewModel.getTopTimes().observe(this, topTimes -> this.topTimes.setText(String.valueOf(topTimes)));
-        mViewModel.getCurrentTime().observe(this, currentValue -> counter.setText(String.valueOf(currentValue)));
+        mViewModel.getCurrentTime().observe(this, currentValue -> {
+            counter.setText(String.valueOf(currentValue));
+
+            if ((int)(long)currentValue != currentValue) {
+                throw new ArithmeticException("integer overflow");
+            }
+            progressBar.setProgress((int)(long) currentValue);
+        });
 
         binding.getRoot().setOnClickListener((v) -> incrementCounterByOne());
-
         binding.contentMain.buttonIncr.setOnClickListener((v) -> incrementCounterByOne());
         binding.contentMain.buttonDecr.setOnClickListener((v) -> decrementCounterByOne());
     }
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpProgressBar(long topValue) {
         try {
             progressBar.setMax((int) topValue);
+            progressBar.setProgress(Integer.parseInt(counter.getText().toString()));
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
