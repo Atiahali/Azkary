@@ -1,7 +1,6 @@
 package com.misbahah.ui
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -13,7 +12,7 @@ import com.misbahah.ui.main.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private var mViewModel: MainViewModel? = null
 
     private lateinit var counter: TextView
@@ -25,37 +24,35 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         assignVariablesViews()
+
         mViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val topValue = mViewModel!!.initAndGetPreferences(this).getLong(Constants.TOP_TIMES_OF_ZIKR_KEY, 0)
+        val topValue = mViewModel?.initAndGetPreferences(this)
+                ?.getLong(Constants.TOP_TIMES_OF_ZIKR_KEY, 0) ?: 0
         topTimes.text = topValue.toString()
         setUpProgressBar(topValue)
 
-        mViewModel!!.topTimes.observe(this, { topTimes: Long ->
+        mViewModel?.topTimes?.observe(this, { topTimes: Long ->
             this.topTimes.text = topTimes.toString()
         })
-
-        mViewModel!!.currentTime.observe(this, { currentValue: Long ->
+        mViewModel?.currentTime?.observe(this, { currentValue: Long ->
             counter.text = currentValue.toString()
-
-            if (currentValue.toBigInteger() != currentValue.toBigInteger())
-                throw ArithmeticException("integer overflow")
-
-            progressBar.progress = currentValue.toInt()
+            progressBar.progress = currentValue.toBigInteger().toInt()
         })
-        binding.root.setOnClickListener { v: View? -> incrementCounterByOne() }
-        binding.contentMain.buttonIncr.setOnClickListener { v: View? -> incrementCounterByOne() }
-        binding.contentMain.buttonDecr.setOnClickListener { v: View? -> decrementCounterByOne() }
+
+        binding.root.setOnClickListener { incrementCounterByOne() }
+        binding.contentMain.buttonIncr.setOnClickListener { incrementCounterByOne() }
+        binding.contentMain.buttonDecr.setOnClickListener { decrementCounterByOne() }
     }
 
     private fun incrementCounterByOne() {
         val incrementedValue = (counter.text.toString().toInt() + 1).toLong()
-        mViewModel!!.incrementCounterByOne(baseContext, incrementedValue)
+        mViewModel?.incrementCounterByOne(baseContext, incrementedValue)
     }
 
     private fun decrementCounterByOne() {
         val decrementedValue = (counter.text.toString().toInt() - 1).toLong()
-        mViewModel!!.decrementCounterByOne(decrementedValue)
+        mViewModel?.decrementCounterByOne(decrementedValue)
     }
 
     private fun setUpProgressBar(topValue: Long) {
