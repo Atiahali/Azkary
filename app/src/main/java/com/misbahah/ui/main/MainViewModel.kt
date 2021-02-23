@@ -11,7 +11,7 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.misbahah.R
-import com.misbahah.Utilities.Constants
+import com.misbahah.Utilities.TOP_TIMES_OF_ZIKR_KEY
 
 class MainViewModel : ViewModel() {
 
@@ -34,11 +34,11 @@ class MainViewModel : ViewModel() {
         }
         initAndGetPreferences(context)
 
-        val topTimes = sharedPreferences!!.getLong(Constants.TOP_TIMES_OF_ZIKR_KEY, 0)
+        val topTimes = sharedPreferences!!.getLong(TOP_TIMES_OF_ZIKR_KEY, 0)
         if (currentValue > topTimes) {
             this.topTimes.value = currentValue
             sharedPreferences!!.edit()
-                    .putLong(Constants.TOP_TIMES_OF_ZIKR_KEY, currentValue)
+                    .putLong(TOP_TIMES_OF_ZIKR_KEY, currentValue)
                     .apply()
         }
     }
