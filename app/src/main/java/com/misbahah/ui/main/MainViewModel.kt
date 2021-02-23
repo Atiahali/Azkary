@@ -11,7 +11,7 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.misbahah.R
-import com.misbahah.Utilities.TOP_TIMES_OF_ZIKR_KEY
+import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
 
 class MainViewModel : ViewModel() {
 
