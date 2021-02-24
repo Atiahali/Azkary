@@ -6,14 +6,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
+import androidx.databinding.DataBindingUtil
+import com.misbahah.R
 import com.misbahah.databinding.ActivityMainBinding
+import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
 import com.misbahah.ui.main.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     private val mViewModel: MainViewModel by viewModels()
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var counterTextView: TextView
     private lateinit var topTimesTextView: TextView
@@ -21,35 +23,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        assignVariablesViews()
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        initializeViewsAndBindingVariables()
 
-        val topValue = mViewModel.initAndGetPreferences(this)
-                ?.getLong(TOP_TIMES_OF_ZIKR_KEY, 0) ?: 0
+        val topValue = mViewModel.getTopValue(this)
+
 
         topTimesTextView.text = topValue.toString()
+
         setUpProgressBar(topValue)
 
         mViewModel.topTimes.observe(this, { topTimes: Long ->
             this.topTimesTextView.text = topTimes.toString()
         })
+
         mViewModel.currentTime.observe(this, { currentValue: Long ->
             counterTextView.text = currentValue.toString()
             progressBar.progress = currentValue.toBigInteger().toInt()
         })
-
-        binding.root.setOnClickListener { incrementCounterByOne() }
-        binding.contentMain.buttonIncr.setOnClickListener { incrementCounterByOne() }
-        binding.contentMain.buttonDecr.setOnClickListener { decrementCounterByOne() }
     }
 
-    private fun incrementCounterByOne() {
+    fun incrementCounterByOne() {
         val incrementedValue = (counterTextView.text.toString().toInt() + 1).toLong()
         mViewModel.incrementCounterByOne(baseContext, incrementedValue)
     }
 
-    private fun decrementCounterByOne() {
+    fun decrementCounterByOne() {
         val decrementedValue = (counterTextView.text.toString().toInt() - 1).toLong()
         mViewModel.decrementCounterByOne(decrementedValue)
     }
@@ -63,9 +62,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun assignVariablesViews() {
-        counterTextView = binding.contentMain.timer
-        topTimesTextView = binding.contentMain.topTimes
-        progressBar = binding.contentMain.progressBar
+    private fun initializeViewsAndBindingVariables() {
+        binding.mainActivity = this
+        binding.model = mViewModel
+        binding.lifecycleOwner = this
+        binding.currentTime = mViewModel.currentTime.value?.toInt() ?: 0
+        binding.topTime = mViewModel.topTimes.value
+
+        counterTextView = binding.timer
+        topTimesTextView = binding.topTimes
+        progressBar = binding.progressBar
     }
 }

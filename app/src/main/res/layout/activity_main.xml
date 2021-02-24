@@ -3,7 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="currentTime"
+            type="Integer" />
+        <variable
+            name="topTime"
+            type="Long" />
+        <variable
+            name="mainActivity"
+            type="com.misbahah.ui.MainActivity" />
+        <variable
+            name="model"
+            type="com.misbahah.ui.main.MainViewModel" />
     </data>
 
     <LinearLayout
@@ -55,8 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
+                android:onClick="@{() -> mainActivity.incrementCounterByOne()}"
                 style="@style/CircularDeterminateProgressBar"
-                android:progress="@string/timer_first_value"
                 app:layout_constraintBottom_toTopOf="@+id/button_decr"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -81,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/plus_one"
+                android:onClick="@{() -> mainActivity.incrementCounterByOne()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/progress_bar"
                 app:layout_constraintTop_toBottomOf="@id/progress_bar" />
@@ -90,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/minus_one"
+                android:onClick="@{() -> mainActivity.decrementCounterByOne()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/progress_bar"
                 app:layout_constraintTop_toBottomOf="@id/progress_bar" />

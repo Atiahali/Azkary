@@ -43,7 +43,10 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun initAndGetPreferences(context: Context?): SharedPreferences? {
+    fun getTopValue(context: Context): Long = this.initAndGetPreferences(context)
+                ?.getLong(TOP_TIMES_OF_ZIKR_KEY, 0) ?: 0
+
+    private fun initAndGetPreferences(context: Context): SharedPreferences? {
         if (sharedPreferences == null) sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPreferences
     }
