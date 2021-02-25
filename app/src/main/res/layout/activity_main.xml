@@ -7,9 +7,6 @@
             name="currentTime"
             type="Integer" />
         <variable
-            name="topTime"
-            type="Long" />
-        <variable
             name="mainActivity"
             type="com.misbahah.ui.MainActivity" />
         <variable
@@ -51,6 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="@{Long.toString(model.topTimes.longValue() == 0? model.getTopValue(context) : model.topTimes.longValue())}"
                 android:layout_marginStart="12dp"
                 android:textSize="@dimen/top_value_text_size"
                 android:textStyle="bold" />

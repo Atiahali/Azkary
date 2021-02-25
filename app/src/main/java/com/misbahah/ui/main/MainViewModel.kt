@@ -15,7 +15,7 @@ import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
 
 class MainViewModel : ViewModel() {
 
-    val topTimes = MutableLiveData<Long>()
+    val topTimes = MutableLiveData<Long>(0)
     val currentTime = MutableLiveData<Long>()
     private var sharedPreferences: SharedPreferences? = null
 
@@ -44,7 +44,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun getTopValue(context: Context): Long = this.initAndGetPreferences(context)
-                ?.getLong(TOP_TIMES_OF_ZIKR_KEY, 0) ?: 0
+            ?.getLong(TOP_TIMES_OF_ZIKR_KEY, 0) ?: 0
 
     private fun initAndGetPreferences(context: Context): SharedPreferences? {
         if (sharedPreferences == null) sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

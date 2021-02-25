@@ -6,10 +6,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import com.misbahah.R
 import com.misbahah.databinding.ActivityMainBinding
-import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
 import com.misbahah.ui.main.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -28,14 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         val topValue = mViewModel.getTopValue(this)
 
-
-        topTimesTextView.text = topValue.toString()
-
         setUpProgressBar(topValue)
-
-        mViewModel.topTimes.observe(this, { topTimes: Long ->
-            this.topTimesTextView.text = topTimes.toString()
-        })
 
         mViewModel.currentTime.observe(this, { currentValue: Long ->
             counterTextView.text = currentValue.toString()
@@ -67,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         binding.model = mViewModel
         binding.lifecycleOwner = this
         binding.currentTime = mViewModel.currentTime.value?.toInt() ?: 0
-        binding.topTime = mViewModel.topTimes.value
 
         counterTextView = binding.timer
         topTimesTextView = binding.topTimes
