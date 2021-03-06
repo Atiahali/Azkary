@@ -46,7 +46,8 @@ class MainViewModel : ViewModel() {
     fun getTopValue(context: Context): Long = this.initAndGetPreferences(context)
             ?.getLong(TOP_TIMES_OF_ZIKR_KEY, 0) ?: 0
 
-    private fun initAndGetPreferences(context: Context): SharedPreferences? {
+    private fun initAndGetPreferences(_context: Context): SharedPreferences? {
+        val context = _context.applicationContext
         if (sharedPreferences == null) sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPreferences
     }
