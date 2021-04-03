@@ -1,4 +1,4 @@
-package com.misbahah.ui
+package com.misbahah.ui.main
 
 import android.os.Bundle
 import android.widget.ProgressBar
@@ -6,11 +6,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import com.misbahah.R
 import com.misbahah.databinding.ActivityMainBinding
-import com.misbahah.ui.main.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 

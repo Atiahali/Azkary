@@ -9,7 +9,7 @@
         android:roundIcon="@drawable/ic_tasbih"
         android:supportsRtl="true"
         android:theme="@style/Theme.Misbahah">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

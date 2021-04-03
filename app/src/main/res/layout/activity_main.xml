@@ -8,7 +8,7 @@
             type="Integer" />
         <variable
             name="mainActivity"
-            type="com.misbahah.ui.MainActivity" />
+            type="com.misbahah.ui.main.MainActivity" />
         <variable
             name="model"
             type="com.misbahah.ui.main.MainViewModel" />
