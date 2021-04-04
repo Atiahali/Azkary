@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initializeViewsAndBindingVariables()
 
+        mViewModel.initializeLastRunPropertyAndRunTheRelatedService(this)
+
         val topValue = mViewModel.getTopValue(this)
 
         setUpProgressBar(topValue)

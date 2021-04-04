@@ -2,13 +2,19 @@ package com.misbahah.ui.main
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Build
+import android.util.Log
+import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.misbahah.R
+import com.misbahah.service.CheckRecentRun
+import com.misbahah.service.CheckRecentRun.Companion.ENABLED
+import com.misbahah.utilities.LAST_RUN
 import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
 import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
 
@@ -51,11 +57,46 @@ class MainViewModel : ViewModel() {
         return sharedPreferences
     }
 
+    fun initializeLastRunPropertyAndRunTheRelatedService(context: Context) {
+        initAndGetPreferences(context)
+        // First time running app?
+        if (!sharedPreferences!!.contains(LAST_RUN)) {
+            Log.i("TAG", "YES")
+            enableNotification()
+        }
+        Log.i("MainActivity", "Starting CheckRecentRun service...")
+        context.applicationContext.startService(
+                Intent(context.applicationContext, CheckRecentRun::class.java)
+        )
+    }
+
+    private fun recordRunTime() {
+        sharedPreferences?.edit {
+            putLong(LAST_RUN, System.currentTimeMillis())
+        }
+    }
+
+    private fun enableNotification() {
+        sharedPreferences?.edit {
+            putLong(LAST_RUN, System.currentTimeMillis())
+            putBoolean(ENABLED, true)
+        }
+        Log.i("TAG", "Notifications enabled")
+    }
+
+    fun disableNotification() {
+        sharedPreferences?.edit {
+            putLong(LAST_RUN, System.currentTimeMillis())
+            putBoolean(ENABLED, false)
+        }
+        Log.i("TAG", "Notifications disabled")
+    }
+
     private var soundPool: SoundPool? = null
     private var doneSound = 0
 
     private fun initSoundPool(context: Context) {
-        createNewSoundPool()
+        soundPool = createNewSoundPool()
         doneSound = soundPool?.load(context, R.raw.notification, 1) ?: -1
     }
 
@@ -80,6 +121,7 @@ class MainViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        recordRunTime()
         sharedPreferences = null
         soundPool?.release()
         soundPool = null

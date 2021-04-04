@@ -61,9 +61,9 @@ class CheckRecentRun : Service() {
     companion object {
         const val TAG = "CheckRecentPlay"
         private const val MILLISECS_PER_DAY = 86400000L
-         private const val MILLISECS_PER_MIN = 30000L
-         const val delay = MILLISECS_PER_MIN * 1// 0.5 minutes (for testing)
-        // private const val delay = MILLISECS_PER_DAY * 3 // 3 days
+        // private const val MILLISECS_PER_MIN = 30000L
+        // const val delay = MILLISECS_PER_MIN * 1// 0.5 minutes (for testing)
+        private const val delay = MILLISECS_PER_DAY * 3 // 3 days
 
         const val VERBOSE_NOTIFICATION_CHANNEL_NAME =
                 "Check last run"
