@@ -4,13 +4,12 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
-import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.misbahah.R
+import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
 import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
 
 class MainViewModel : ViewModel() {
@@ -48,7 +47,7 @@ class MainViewModel : ViewModel() {
 
     private fun initAndGetPreferences(_context: Context): SharedPreferences? {
         val context = _context.applicationContext
-        if (sharedPreferences == null) sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        if (sharedPreferences == null) sharedPreferences = context.getSharedPreferences(MAIN_ACTIVITY_PREFS, Context.MODE_PRIVATE)
         return sharedPreferences
     }
 
@@ -56,11 +55,7 @@ class MainViewModel : ViewModel() {
     private var doneSound = 0
 
     private fun initSoundPool(context: Context) {
-        soundPool = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            createNewSoundPool()
-        else
-            SoundPool(1, AudioManager.STREAM_MUSIC, 0))
-
+        createNewSoundPool()
         doneSound = soundPool?.load(context, R.raw.notification, 1) ?: -1
     }
 
