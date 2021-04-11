@@ -1,6 +1,8 @@
 package com.misbahah.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -8,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.misbahah.R
+import com.misbahah.broadcast.MyReceiver
 import com.misbahah.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -23,9 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initializeViewsAndBindingVariables()
-
-        mViewModel.initializeLastRunPropertyAndRunTheRelatedService(this)
-
+        
         val topValue = mViewModel.getTopValue(this)
 
         setUpProgressBar(topValue)
@@ -34,6 +35,11 @@ class MainActivity : AppCompatActivity() {
             counterTextView.text = currentValue.toString()
             progressBar.progress = currentValue.toBigInteger().toInt()
         })
+
+        mViewModel.initializeLastRunProperty()
+        mViewModel.recordRunTime()
+        Log.i("MainActivity", "Starting MyReceiver broadcast...")
+        sendBroadcast(Intent(this, MyReceiver::class.java))
     }
 
     fun incrementCounterByOne() {

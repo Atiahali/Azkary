@@ -2,7 +2,6 @@ package com.misbahah.ui.main
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.media.AudioAttributes
 import android.media.SoundPool
@@ -12,8 +11,7 @@ import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.misbahah.R
-import com.misbahah.service.CheckRecentRun
-import com.misbahah.service.CheckRecentRun.Companion.ENABLED
+import com.misbahah.broadcast.MyReceiver.Companion.ENABLED
 import com.misbahah.utilities.LAST_RUN
 import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
 import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
@@ -35,6 +33,7 @@ class MainViewModel : ViewModel() {
 
     private fun updateTopTimes(context: Context, currentValue: Long) {
         if (currentValue % 100 == 0L) {
+            recordRunTime()
             playDoneRingtone(context)
         }
         initAndGetPreferences(context)
@@ -57,29 +56,32 @@ class MainViewModel : ViewModel() {
         return sharedPreferences
     }
 
-    fun initializeLastRunPropertyAndRunTheRelatedService(context: Context) {
-        initAndGetPreferences(context)
+    fun initializeLastRunProperty() {
         // First time running app?
         if (!sharedPreferences!!.contains(LAST_RUN)) {
             Log.i("TAG", "YES")
             enableNotification()
         }
-        Log.i("MainActivity", "Starting CheckRecentRun service...")
-        context.applicationContext.startService(
-                Intent(context.applicationContext, CheckRecentRun::class.java)
-        )
     }
 
-    private fun recordRunTime() {
-        sharedPreferences?.edit {
-            putLong(LAST_RUN, System.currentTimeMillis())
+    fun recordRunTime() {
+        if (sharedPreferences != null) {
+            sharedPreferences?.edit {
+                putLong(LAST_RUN, System.currentTimeMillis())
+            }
+        } else {
+            throw NullPointerException("shared preferences is NULL")
         }
     }
 
     private fun enableNotification() {
-        sharedPreferences?.edit {
-            putLong(LAST_RUN, System.currentTimeMillis())
-            putBoolean(ENABLED, true)
+        if (sharedPreferences != null) {
+            sharedPreferences?.edit {
+                putLong(LAST_RUN, System.currentTimeMillis())
+                putBoolean(ENABLED, true)
+            }
+        } else {
+            throw NullPointerException("shared preferences is NULL")
         }
         Log.i("TAG", "Notifications enabled")
     }

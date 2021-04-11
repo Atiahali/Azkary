@@ -7,11 +7,9 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.misbahah.R
-import com.misbahah.service.CheckRecentRun.Companion.CHANNEL_ID
-import com.misbahah.service.CheckRecentRun.Companion.NOTIFICATION_ID
-import com.misbahah.service.CheckRecentRun.Companion.NOTIFICATION_TITLE
-import com.misbahah.service.CheckRecentRun.Companion.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION
-import com.misbahah.service.CheckRecentRun.Companion.VERBOSE_NOTIFICATION_CHANNEL_NAME
+import com.misbahah.broadcast.MyReceiver.Companion.CHANNEL_ID
+import com.misbahah.broadcast.MyReceiver.Companion.NOTIFICATION_ID
+import com.misbahah.broadcast.MyReceiver.Companion.NOTIFICATION_TITLE
 import java.lang.NullPointerException
 
 fun makeStatusNotification(message: String, context: Context, channel: NotificationChannel?) {
@@ -34,6 +32,7 @@ fun makeStatusNotification(message: String, context: Context, channel: Notificat
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVibrate(LongArray(1))
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
 
     // Show the notification
     NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
