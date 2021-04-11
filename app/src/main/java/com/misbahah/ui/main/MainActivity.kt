@@ -2,7 +2,6 @@ package com.misbahah.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -12,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.misbahah.R
 import com.misbahah.broadcast.MyReceiver
 import com.misbahah.databinding.ActivityMainBinding
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initializeViewsAndBindingVariables()
-        
+
         val topValue = mViewModel.getTopValue(this)
 
         setUpProgressBar(topValue)
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         mViewModel.initializeLastRunProperty()
         mViewModel.recordRunTime()
-        Log.i("MainActivity", "Starting MyReceiver broadcast...")
+        Timber.i("Starting MyReceiver broadcast...")
         sendBroadcast(Intent(this, MyReceiver::class.java))
     }
 

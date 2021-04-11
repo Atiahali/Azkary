@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Build
-import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +14,7 @@ import com.misbahah.broadcast.MyReceiver.Companion.ENABLED
 import com.misbahah.utilities.LAST_RUN
 import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
 import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
+import timber.log.Timber
 
 class MainViewModel : ViewModel() {
 
@@ -59,7 +59,7 @@ class MainViewModel : ViewModel() {
     fun initializeLastRunProperty() {
         // First time running app?
         if (!sharedPreferences!!.contains(LAST_RUN)) {
-            Log.i("TAG", "YES")
+            Timber.i("YES")
             enableNotification()
         }
     }
@@ -83,7 +83,7 @@ class MainViewModel : ViewModel() {
         } else {
             throw NullPointerException("shared preferences is NULL")
         }
-        Log.i("TAG", "Notifications enabled")
+        Timber.i("Notifications enabled")
     }
 
     fun disableNotification() {
@@ -91,7 +91,7 @@ class MainViewModel : ViewModel() {
             putLong(LAST_RUN, System.currentTimeMillis())
             putBoolean(ENABLED, false)
         }
-        Log.i("TAG", "Notifications disabled")
+        Timber.i("Notifications disabled")
     }
 
     private var soundPool: SoundPool? = null
