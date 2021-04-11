@@ -8,6 +8,7 @@ import android.util.Log
 import com.misbahah.utilities.LAST_RUN
 import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
 import com.misbahah.utilities.makeStatusNotification
+import timber.log.Timber
 
 class MyReceiver : BroadcastReceiver() {
 
@@ -18,12 +19,11 @@ class MyReceiver : BroadcastReceiver() {
         if (settings.getBoolean(ENABLED, true)) {
             // Is it time for a notification?
             val channel = createChannel()
-            Log.i(TAG, "onReceive: ")
             makeStatusNotification("لا تنس ذكر الله", context, channel)
-            Log.i(TAG, "onStartCommand: " + settings.getLong(LAST_RUN, -1))
+            Timber.i("onStartCommand: %s", settings.getLong(LAST_RUN, -1))
             setAlarm(context)
         } else {
-            Log.i(TAG, "Notifications are disabled")
+            Timber.i("Notifications are disabled")
         }
     }
 
@@ -46,7 +46,7 @@ class MyReceiver : BroadcastReceiver() {
                     PendingIntent.FLAG_CANCEL_CURRENT)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delay, pendingIntent)
-            Log.i(TAG, "Alarm set")
+            Timber.i("Alarm set")
         }
 
         const val TAG = "AlarmReceiver"
