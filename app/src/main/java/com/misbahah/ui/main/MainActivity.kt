@@ -1,8 +1,6 @@
 package com.misbahah.ui.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -10,9 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.misbahah.R
-import com.misbahah.broadcast.MyReceiver
 import com.misbahah.databinding.ActivityMainBinding
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,10 +33,11 @@ class MainActivity : AppCompatActivity() {
             progressBar.progress = currentValue.toBigInteger().toInt()
         })
 
-        mViewModel.initializeLastRunProperty()
-        mViewModel.recordRunTime()
-        Timber.i("Starting MyReceiver broadcast...")
-        sendBroadcast(Intent(this, MyReceiver::class.java))
+        startNotificationWorker()
+    }
+
+    private fun startNotificationWorker() {
+        NotificationWorker.startNotificationWorker(applicationContext, this)
     }
 
     fun incrementCounterByOne() {

@@ -6,15 +6,22 @@ import android.content.SharedPreferences
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.misbahah.R
-import com.misbahah.broadcast.MyReceiver.Companion.ENABLED
-import com.misbahah.utilities.LAST_RUN
+import com.misbahah.utilities.FIRST_RUN_KEY
 import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
 import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
+import com.misbahah.utilities.WORKER_PREFERECES
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class MainViewModel : ViewModel() {
 
@@ -33,7 +40,6 @@ class MainViewModel : ViewModel() {
 
     private fun updateTopTimes(context: Context, currentValue: Long) {
         if (currentValue % 100 == 0L) {
-            recordRunTime()
             playDoneRingtone(context)
         }
         initAndGetPreferences(context)
@@ -56,46 +62,16 @@ class MainViewModel : ViewModel() {
         return sharedPreferences
     }
 
-    fun initializeLastRunProperty() {
-        // First time running app?
-        if (!sharedPreferences!!.contains(LAST_RUN)) {
-            Timber.i("YES")
-            enableNotification()
-        }
-    }
-
-    fun recordRunTime() {
-        if (sharedPreferences != null) {
-            sharedPreferences?.edit {
-                putLong(LAST_RUN, System.currentTimeMillis())
-            }
-        } else {
-            throw NullPointerException("shared preferences is NULL")
-        }
-    }
-
-    private fun enableNotification() {
-        if (sharedPreferences != null) {
-            sharedPreferences?.edit {
-                putLong(LAST_RUN, System.currentTimeMillis())
-                putBoolean(ENABLED, true)
-            }
-        } else {
-            throw NullPointerException("shared preferences is NULL")
-        }
-        Timber.i("Notifications enabled")
-    }
-
-    fun disableNotification() {
-        sharedPreferences?.edit {
-            putLong(LAST_RUN, System.currentTimeMillis())
-            putBoolean(ENABLED, false)
-        }
-        Timber.i("Notifications disabled")
-    }
-
     private var soundPool: SoundPool? = null
     private var doneSound = 0
+
+    private fun playDoneRingtone(context: Context) {
+        if (soundPool == null) {
+            initSoundPool(context)
+            soundPool?.setOnLoadCompleteListener { _, _, _ -> playDoneRingtone(context) }
+        }
+        soundPool?.play(doneSound, 1f, 1f, 0, 0, 1f)
+    }
 
     private fun initSoundPool(context: Context) {
         soundPool = createNewSoundPool()
@@ -113,19 +89,11 @@ class MainViewModel : ViewModel() {
                 .build()
     }
 
-    private fun playDoneRingtone(context: Context) {
-        if (soundPool == null) {
-            initSoundPool(context)
-            soundPool?.setOnLoadCompleteListener { _, _, _ -> playDoneRingtone(context) }
-        }
-        soundPool?.play(doneSound, 1f, 1f, 0, 0, 1f)
-    }
-
     override fun onCleared() {
         super.onCleared()
-        recordRunTime()
         sharedPreferences = null
         soundPool?.release()
         soundPool = null
     }
+
 }
