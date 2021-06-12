@@ -1,4 +1,4 @@
-Spackage com.misbahah.ui.main
+package com.misbahah.ui.main
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
