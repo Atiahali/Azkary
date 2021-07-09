@@ -9,10 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.misbahah.R
 import com.misbahah.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val mViewModel: MainViewModel by viewModels()
+
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var counterTextView: TextView
@@ -24,9 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initializeViewsAndBindingVariables()
 
-        val topValue = mViewModel.getTopValue(this)
 
-        setUpProgressBar(topValue)
+        setUpProgressBar(mViewModel.getTopValue())
 
         mViewModel.currentTime.observe(this, { currentValue: Long ->
             counterTextView.text = currentValue.toString()
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainActivity = this
         binding.model = mViewModel
         binding.lifecycleOwner = this
-        binding.currentTime = mViewModel.currentTime.value?.toInt() ?: 0
+        binding.currentTime = mViewModel.currentTime.value?.toInt() ?: -1
 
         counterTextView = binding.timer
         topTimesTextView = binding.topTimes

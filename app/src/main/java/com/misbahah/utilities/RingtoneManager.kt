@@ -4,8 +4,9 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.SoundPool
 import com.misbahah.R
+import javax.inject.Inject
 
-class RingtoneManager {
+class RingtoneManager @Inject constructor() {
     private var soundPool: SoundPool? = null
     private var doneSound = 0
 
@@ -30,10 +31,5 @@ class RingtoneManager {
         return SoundPool.Builder()
             .setAudioAttributes(attributes)
             .build()
-    }
-
-    fun release() {
-        soundPool?.release()
-        soundPool = null
     }
 }

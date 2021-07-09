@@ -51,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{Long.toString(model.topTimes.longValue() == 0? model.getTopValue(context) : model.topTimes.longValue())}"
+            android:text="@{Long.toString(model.topTimes)}"
             android:textSize="@dimen/top_value_text_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
