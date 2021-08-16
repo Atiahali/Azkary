@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="أستغفر الله وأتوب إليه"
-            android:textColor="?attr/colorSecondaryVariant"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
