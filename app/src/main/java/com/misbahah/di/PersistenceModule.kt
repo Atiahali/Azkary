@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.misbahah.data.db.AppDatabase
-import com.misbahah.data.db.ZikrCategoryDao
+import com.misbahah.data.db.CategoryDao
 import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
 import dagger.Module
 import dagger.Provides
@@ -29,8 +29,8 @@ object PersistenceModule {
 
     @Provides
     @Singleton
-    fun provideZikrCategoryDao(appDatabase: AppDatabase): ZikrCategoryDao =
-        appDatabase.zikrCategoryDao()
+    fun provideZikrCategoryDao(appDatabase: AppDatabase): CategoryDao =
+        appDatabase.categoryDao()
 
     @Provides
     @Singleton
