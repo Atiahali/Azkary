@@ -25,8 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        initializeViewsAndBindingVariables()
-
+        initViews()
 
         setUpProgressBar(mViewModel.getTopValue())
 
@@ -36,6 +35,26 @@ class MainActivity : AppCompatActivity() {
         })
 
         startNotificationWorker()
+    }
+
+    private fun initViews() {
+        binding.mainActivity = this
+        binding.model = mViewModel
+        binding.lifecycleOwner = this
+        binding.currentTime = mViewModel.currentTime.value?.toInt() ?: -1
+
+        counterTextView = binding.timer
+        topTimesTextView = binding.topTimes
+        progressBar = binding.progressBar
+    }
+
+    private fun setUpProgressBar(topValue: Long) {
+        try {
+            progressBar.max = topValue.toInt()
+            progressBar.progress = counterTextView.text.toString().toInt()
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun startNotificationWorker() {
@@ -50,25 +69,5 @@ class MainActivity : AppCompatActivity() {
     fun decrementCounterByOne() {
         val decrementedValue = (counterTextView.text.toString().toInt() - 1).toLong()
         mViewModel.decrementCounterByOne(decrementedValue)
-    }
-
-    private fun setUpProgressBar(topValue: Long) {
-        try {
-            progressBar.max = topValue.toInt()
-            progressBar.progress = counterTextView.text.toString().toInt()
-        } catch (e: Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun initializeViewsAndBindingVariables() {
-        binding.mainActivity = this
-        binding.model = mViewModel
-        binding.lifecycleOwner = this
-        binding.currentTime = mViewModel.currentTime.value?.toInt() ?: -1
-
-        counterTextView = binding.timer
-        topTimesTextView = binding.topTimes
-        progressBar = binding.progressBar
     }
 }
