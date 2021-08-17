@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 30
@@ -9,6 +11,7 @@ android {
 
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 
     defaultConfig {
@@ -70,6 +73,9 @@ dependencies {
     // Navigation Component
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+
+    // SDP - a scalable size unit
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
 }
 repositories {
