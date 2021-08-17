@@ -8,9 +8,9 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.misbahah.R
-import com.misbahah.ui.main.NotificationWorker.Companion.CHANNEL_ID
-import com.misbahah.ui.main.NotificationWorker.Companion.NOTIFICATION_ID
-import com.misbahah.ui.main.NotificationWorker.Companion.NOTIFICATION_TITLE
+import com.misbahah.worker.NotificationWorker.Companion.CHANNEL_ID
+import com.misbahah.worker.NotificationWorker.Companion.NOTIFICATION_ID
+import com.misbahah.worker.NotificationWorker.Companion.NOTIFICATION_TITLE
 
 fun makeStatusNotification(message: String, context: Context, channel: NotificationChannel?, pendingIntent: PendingIntent?) {
 

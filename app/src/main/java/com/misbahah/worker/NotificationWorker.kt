@@ -1,4 +1,4 @@
-package com.misbahah.ui.main
+package com.misbahah.worker
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.work.*
+import com.misbahah.main.ui.MainActivity
 import com.misbahah.utilities.FIRST_RUN_KEY
 import com.misbahah.utilities.WORKER_PREFERECES
 import com.misbahah.utilities.makeStatusNotification
