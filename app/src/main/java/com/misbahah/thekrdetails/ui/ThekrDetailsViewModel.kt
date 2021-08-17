@@ -1,4 +1,4 @@
-package com.misbahah.ui.main
+package com.misbahah.thekrdetails.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class ThekrDetailsViewModel  @Inject constructor(
     private val ringtoneManager: RingtoneManager,
     private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
