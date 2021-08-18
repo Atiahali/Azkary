@@ -12,5 +12,5 @@ data class Category(
     @ColumnInfo(name = "category_name")
     val categoryName: String,
     @ColumnInfo(name = "category_image")
-    val categoryImage: String
+    val categoryImage: String?
 )

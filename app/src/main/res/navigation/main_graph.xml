@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/categoriesFragment2">
+    app:startDestination="@id/categoriesFragment">
 
     <fragment
         android:id="@+id/thekrDetailsFragment"
         android:name="com.misbahah.zikrdetails.ui.ZikrDetailsFragment"
         android:label="thekr_details_fragment"
-        tools:layout="@layout/thekr_details_fragment" >
+        tools:layout="@layout/thekr_details_fragment">
         <argument
             android:name="thekr"
             app:argType="com.misbahah.data.model.Zikr" />
     </fragment>
     <fragment
-        android:id="@+id/categoriesFragment2"
-        android:name="com.misbahah.categories.ui.CategoriesFragment"
+        android:id="@+id/categoriesFragment"
         android:label="fragment_categories"
+        android:name="com.misbahah.categories.ui.CategoriesFragment"
         tools:layout="@layout/fragment_categories" />
 </navigation>

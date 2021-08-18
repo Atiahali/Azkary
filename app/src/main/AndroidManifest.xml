@@ -3,6 +3,7 @@
     package="com.misbahah">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +13,6 @@
         android:roundIcon="@drawable/ic_tasbih"
         android:supportsRtl="true"
         android:theme="@style/Theme.Misbahah">
-        <receiver
-            android:name=".broadcast.MyReceiver"
-            android:enabled="true"
-            android:exported="false" />
 
         <activity android:name=".main.ui.MainActivity">
             <intent-filter>
