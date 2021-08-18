@@ -1,4 +1,4 @@
-package com.misbahah.thekrdetails.ui
+package com.misbahah.zikrdetails.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,9 +15,9 @@ import com.misbahah.databinding.ThekrDetailsFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ThekrDetailsFragment : Fragment() {
+class ZikrDetailsFragment : Fragment() {
 
-    private val mViewModel by viewModels<ThekrDetailsViewModel>()
+    private val mViewModel by viewModels<ZikrDetailsViewModel>()
 
     private lateinit var binding: ThekrDetailsFragmentBinding
 
