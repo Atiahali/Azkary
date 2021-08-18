@@ -5,6 +5,6 @@
     <color name="green_700">#00796b</color>
     <color name="blue_300">#64b5f6</color>
     <color name="blue_700">#1976d2</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
