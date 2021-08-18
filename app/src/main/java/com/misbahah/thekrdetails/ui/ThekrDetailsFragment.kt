@@ -1,46 +1,58 @@
-package com.misbahah.ui.main
+package com.misbahah.thekrdetails.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.misbahah.R
-import com.misbahah.databinding.ActivityMainBinding
+import com.misbahah.databinding.ThekrDetailsFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class ThekrDetailsFragment : Fragment() {
 
-    private val mViewModel: MainViewModel by viewModels()
+    private val mViewModel by viewModels<ThekrDetailsViewModel>()
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ThekrDetailsFragmentBinding
 
     private lateinit var counterTextView: TextView
     private lateinit var topTimesTextView: TextView
     private lateinit var progressBar: ProgressBar
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.thekr_details_fragment, container, false)
+
         initViews()
 
         setUpProgressBar(mViewModel.getTopValue())
 
-        mViewModel.currentTime.observe(this, { currentValue: Long ->
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        mViewModel.currentTime.observe(viewLifecycleOwner, { currentValue: Long ->
             counterTextView.text = currentValue.toString()
             progressBar.progress = currentValue.toBigInteger().toInt()
         })
 
-        startNotificationWorker()
+
     }
 
     private fun initViews() {
-        binding.mainActivity = this
+        binding.thekrDetailsFragment = this
         binding.model = mViewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.currentTime = mViewModel.currentTime.value?.toInt() ?: -1
 
         counterTextView = binding.timer
@@ -53,17 +65,15 @@ class MainActivity : AppCompatActivity() {
             progressBar.max = topValue.toInt()
             progressBar.progress = counterTextView.text.toString().toInt()
         } catch (e: Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun startNotificationWorker() {
-        NotificationWorker.startNotificationWorker(applicationContext, this)
-    }
 
     fun incrementCounterByOne() {
         val incrementedValue = (counterTextView.text.toString().toInt() + 1).toLong()
-        mViewModel.incrementCounterByOne(baseContext, incrementedValue)
+
+        mViewModel.incrementCounterByOne(requireContext(), incrementedValue)
     }
 
     fun decrementCounterByOne() {
