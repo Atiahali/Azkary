@@ -14,7 +14,7 @@
         android:paddingTop="@dimen/_24sdp"
         android:paddingEnd="@dimen/_12sdp"
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-        app:spanCount="2"
+        app:spanCount="@integer/categories_grid_columns"
         tools:listitem="@layout/item_category" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
