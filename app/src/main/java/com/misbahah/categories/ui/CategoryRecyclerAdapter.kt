@@ -1,7 +1,9 @@
 package com.misbahah.categories.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,13 +34,17 @@ class CategoryRecyclerAdapter :
     class CategoryViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
-                binding.setClickListener {
-                    binding.category?.let {
-                        TODO()
-                    }
+            binding.setClickListener {
+                binding.category?.let { category ->
+                    navigateToCategoryZikr(category, it)
                 }
             }
+        }
+
+        private fun navigateToCategoryZikr(category: Category, view: View) {
+            val direction =
+                CategoriesFragmentDirections.actionCategoriesFragmentToThekrViewPagerFragment(category.id, category.categoryName)
+            view.findNavController().navigate(direction)
         }
 
         fun bind(item: Category) {
