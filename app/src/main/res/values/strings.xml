@@ -5,4 +5,6 @@
     <string name="plus_one">+1</string>
     <string name="minus_one">-1</string>
     <string name="category_image">Category Image</string>
+    <string name="open_azkar_title">Various Azkar</string>
+    <string name="time_bound_azkar_title">Day Azkar</string>
 </resources>
