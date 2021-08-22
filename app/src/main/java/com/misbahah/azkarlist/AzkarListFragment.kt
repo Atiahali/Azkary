@@ -1,11 +1,11 @@
 package com.misbahah.azkarlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.misbahah.databinding.FragmentAzkarListBinding
 
@@ -21,9 +21,16 @@ class AzkarListFragment : Fragment() {
     ): View {
         binding = FragmentAzkarListBinding.inflate(inflater, container, false)
 
-        Log.i("TAG", "onCreateView: id ${args.categoryId}")
-        Log.i("TAG", "onCreateView: name ${args.categoryName}")
+        initView()
 
         return binding.root
+    }
+
+    private fun initView() {
+        binding.categoryName = args.categoryName
+        binding.toolbar.setNavigationOnClickListener { view ->
+            view.findNavController().navigateUp()
+        }
+        binding.executePendingBindings()
     }
 }
