@@ -25,9 +25,9 @@
     </fragment>
     <fragment
         android:id="@+id/azkarListFragment"
-        android:name="com.misbahah.azkarlist.AzkarListFragment"
+        android:name="com.misbahah.azkarlist.DayCategoryAzkarListFragment"
         android:label="fragment_azkar_list"
-        tools:layout="@layout/fragment_azkar_list" >
+        tools:layout="@layout/fragment_day_category_azkar_list" >
         <argument
             android:name="categoryId"
             app:argType="integer" />

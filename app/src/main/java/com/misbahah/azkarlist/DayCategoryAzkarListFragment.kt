@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.misbahah.databinding.FragmentAzkarListBinding
+import com.misbahah.databinding.FragmentDayCategoryAzkarListBinding
 
-class AzkarListFragment : Fragment() {
+class DayCategoryAzkarListFragment : Fragment() {
 
-    private lateinit var binding: FragmentAzkarListBinding
+    private lateinit var binding: FragmentDayCategoryAzkarListBinding
 
-    private val args by navArgs<AzkarListFragmentArgs>()
+    private val args by navArgs<DayCategoryAzkarListFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAzkarListBinding.inflate(inflater, container, false)
+        binding = FragmentDayCategoryAzkarListBinding.inflate(inflater, container, false)
 
         initView()
 

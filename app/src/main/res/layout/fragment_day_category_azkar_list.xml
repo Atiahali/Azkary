@@ -53,7 +53,6 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:name="com.misbahah.azkarlist.AzkarListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -61,7 +60,7 @@
             android:paddingEnd="@dimen/_16sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".azkarlist.AzkarListFragment"
+            tools:context=".azkarlist.DayCategoryAzkarListFragment"
             tools:listitem="@layout/azkar_list_item" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
