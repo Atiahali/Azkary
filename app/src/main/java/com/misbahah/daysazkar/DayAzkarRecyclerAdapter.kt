@@ -36,14 +36,14 @@ class CategoryRecyclerAdapter :
         init {
             binding.setClickListener {
                 binding.category?.let { category ->
-                    navigateToCategoryZikr(category, it)
+                    navigateToAzkarListFragment(category, it)
                 }
             }
         }
 
-        private fun navigateToCategoryZikr(category: Category, view: View) {
+        private fun navigateToAzkarListFragment(category: Category, view: View) {
             val direction =
-                CategoriesFragmentDirections.actionCategoriesFragmentToThekrViewPagerFragment(category.id, category.categoryName)
+                CategoriesFragmentDirections.actionCategoriesFragmentToAzkarListFragment(category.id, category.categoryName)
             view.findNavController().navigate(direction)
         }
 

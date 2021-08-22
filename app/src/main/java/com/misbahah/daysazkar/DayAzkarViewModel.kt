@@ -1,4 +1,4 @@
-package com.misbahah.categories.ui
+package com.misbahah.daysazkar
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoriesViewModel @Inject constructor(
-    private val categoriesRepository: CategoriesRepository
+class DayAzkarViewModel @Inject constructor(
+    private val dayAzkarRepository: DayAzkarRepository
 ) : ViewModel() {
     private var _categoryList = MutableLiveData<List<Category>>()
     val categoryList: LiveData<List<Category>> = _categoryList
@@ -20,7 +20,7 @@ class CategoriesViewModel @Inject constructor(
     fun getAllCategories() {
         viewModelScope.launch {
             val deferred = async {
-                categoriesRepository.getAllCategories()
+                dayAzkarRepository.getAllCategories()
             }
 
             _categoryList.value = deferred.await()
