@@ -18,5 +18,21 @@
         android:id="@+id/categoriesFragment"
         android:label="fragment_categories"
         android:name="com.misbahah.categories.ui.CategoriesFragment"
-        tools:layout="@layout/fragment_categories" />
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_azkarListFragment"
+            app:destination="@id/azkarListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/azkarListFragment"
+        android:name="com.misbahah.azkarlist.AzkarListFragment"
+        android:label="fragment_azkar_list"
+        tools:layout="@layout/fragment_azkar_list" >
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+    </fragment>
 </navigation>
