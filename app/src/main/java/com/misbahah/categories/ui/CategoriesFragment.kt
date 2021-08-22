@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.misbahah.R
-import com.misbahah.daysazkar.DayAzkarViewModel
 import com.misbahah.databinding.FragmentCategoriesBinding
+import com.misbahah.daysazkar.DayAzkarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

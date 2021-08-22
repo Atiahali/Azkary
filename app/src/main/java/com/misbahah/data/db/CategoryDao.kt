@@ -2,8 +2,8 @@ package com.misbahah.data.db
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.misbahah.data.model.Category
 import com.misbahah.data.db.relations.CategoryWithZikr
+import com.misbahah.data.model.Category
 
 @Dao
 interface CategoryDao {
@@ -13,6 +13,6 @@ interface CategoryDao {
 
 
     @Query("SELECT * FROM category WHERE category_id = :categoryId")
-    suspend fun getAllCategoryZikrById(categoryId: Int): List<CategoryWithZikr>
+    suspend fun getCategoryAzkarById(categoryId: Int): List<CategoryWithZikr>
 
 }
