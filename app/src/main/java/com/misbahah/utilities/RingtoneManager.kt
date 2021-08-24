@@ -20,7 +20,7 @@ class RingtoneManager @Inject constructor() {
 
     private fun initSoundPool(context: Context) {
         soundPool = createNewSoundPool()
-        doneSound = soundPool?.load(context, R.raw.notification, 1) ?: -1
+        doneSound = soundPool?.load(context, R.raw.garas, 1) ?: -1
     }
 
     private fun createNewSoundPool(): SoundPool {
