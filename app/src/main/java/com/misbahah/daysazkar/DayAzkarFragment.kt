@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.misbahah.categories.ui.CategoryRecyclerAdapter
+import com.misbahah.categories.ui.DayAzkarRecyclerAdapter
 import com.misbahah.databinding.FragmentDayAzkarBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +23,7 @@ class DayAzkarFragment : Fragment() {
     ): View {
         binding = FragmentDayAzkarBinding.inflate(inflater, container, false)
 
-        val adapter = CategoryRecyclerAdapter()
+        val adapter = DayAzkarRecyclerAdapter()
         binding.recyclerView.adapter = adapter
         subscribeUi(adapter)
 
@@ -33,7 +33,7 @@ class DayAzkarFragment : Fragment() {
         return binding.root
     }
 
-    private fun subscribeUi(adapter: CategoryRecyclerAdapter) {
+    private fun subscribeUi(adapter: DayAzkarRecyclerAdapter) {
         viewModel.categoryList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }

@@ -11,12 +11,12 @@ import com.misbahah.data.model.Category
 import com.misbahah.databinding.ItemCategoryBinding
 
 
-class CategoryRecyclerAdapter :
-    ListAdapter<Category, CategoryRecyclerAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
+class DayAzkarRecyclerAdapter :
+    ListAdapter<Category, DayAzkarRecyclerAdapter.DayAzkarViewHolder>(CategoryDiffCallback()) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        return CategoryViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayAzkarViewHolder {
+        return DayAzkarViewHolder(
             ItemCategoryBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -25,13 +25,13 @@ class CategoryRecyclerAdapter :
         )
     }
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DayAzkarViewHolder, position: Int) {
         val category = getItem(position)
         holder.bind(category)
     }
 
 
-    class CategoryViewHolder(private val binding: ItemCategoryBinding) :
+    class DayAzkarViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener {
