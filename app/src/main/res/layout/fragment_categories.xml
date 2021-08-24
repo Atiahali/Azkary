@@ -18,7 +18,7 @@
             android:id="@+id/toolbar_layout"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            app:layout_scrollFlags="scroll|snap"
+            app:layout_scrollFlags="snap"
             app:toolbarId="@id/toolbar">
 
             <com.google.android.material.appbar.MaterialToolbar

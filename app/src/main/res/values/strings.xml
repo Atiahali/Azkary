@@ -7,4 +7,6 @@
     <string name="category_image">Category Image</string>
     <string name="open_azkar_title">Various Azkar</string>
     <string name="time_bound_azkar_title">Day Azkar</string>
+    <string name="go_to_zikr_details">Go to zikr details</string>
+    <string name="repeating_times">%1$d (times)</string>
 </resources>

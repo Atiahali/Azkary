@@ -13,5 +13,5 @@ data class CategoryWithZikr(
         entityColumn = "zikr_id",
         associateBy = Junction(CategoryZikrCrossRef::class)
     )
-    val zikr: List<Zikr>
+    val azkar: List<Zikr>
 )
