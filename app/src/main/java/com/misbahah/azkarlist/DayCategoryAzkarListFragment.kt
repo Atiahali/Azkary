@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.misbahah.databinding.FragmentDayCategoryAzkarListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DayCategoryAzkarListFragment : Fragment() {
 
     private lateinit var binding: FragmentDayCategoryAzkarListBinding
@@ -23,6 +25,10 @@ class DayCategoryAzkarListFragment : Fragment() {
 
         initView()
 
+        val adapter = DayCategoryAzkarRecyclerAdapter()
+        binding.recyclerView.adapter = adapter
+        subscribeUi(adapter)
+
         return binding.root
     }
 
@@ -32,5 +38,11 @@ class DayCategoryAzkarListFragment : Fragment() {
             view.findNavController().navigateUp()
         }
         binding.executePendingBindings()
+    }
+
+    private fun subscribeUi(adapter: DayCategoryAzkarRecyclerAdapter) {
+//        viewModel.categoryList.observe(viewLifecycleOwner) {
+//            adapter.submitList(it)
+//        }
     }
 }
