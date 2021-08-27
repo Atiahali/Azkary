@@ -15,5 +15,7 @@ data class Zikr(
     val name: String,
     val daleel: String,
     @ColumnInfo(name = "repeating_number")
-    val repeatingNumber: Int = 0
+    val repeatingNumber: Int = 0,
+    @ColumnInfo(name = "is_in_category")
+    val isInCategory: Boolean = true
 ): Parcelable
