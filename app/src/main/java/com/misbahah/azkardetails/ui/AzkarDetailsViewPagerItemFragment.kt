@@ -1,6 +1,7 @@
-package com.misbahah.zikrdetails.ui
+package com.misbahah.azkardetails.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,29 +11,47 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.misbahah.R
-import com.misbahah.databinding.ThekrDetailsFragmentBinding
+import com.misbahah.categories.ui.CategoriesFragmentDirections
+import com.misbahah.data.model.Zikr
+import com.misbahah.databinding.FragmentAzkarDetailsViewPagerItemBinding
 import dagger.hilt.android.AndroidEntryPoint
+
+private const val ARG_ZIKR = "arg_zikr"
 
 @AndroidEntryPoint
 class ZikrDetailsFragment : Fragment() {
 
-    private val mViewModel by viewModels<ZikrDetailsViewModel>()
+    private val mViewModel by viewModels<AzkarDetailsViewPagerItemViewModel>()
 
-    private lateinit var binding: ThekrDetailsFragmentBinding
+    private lateinit var binding: FragmentAzkarDetailsViewPagerItemBinding
 
     private lateinit var counterTextView: TextView
     private lateinit var topTimesTextView: TextView
     private lateinit var progressBar: ProgressBar
+
+    private var zikr: Zikr? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            zikr = it.getParcelable(ARG_ZIKR)!!
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.thekr_details_fragment, container, false)
+            FragmentAzkarDetailsViewPagerItemBinding.inflate(inflater, container, false)
 
         initViews()
+
+        binding.textView.text = zikr?.name
+
+        Log.i("TAG", "onCreateView:d ${zikr?.name}")
 
         setUpProgressBar(mViewModel.getTopValue())
 
@@ -79,5 +98,16 @@ class ZikrDetailsFragment : Fragment() {
     fun decrementCounterByOne() {
         val decrementedValue = (counterTextView.text.toString().toInt() - 1).toLong()
         mViewModel.decrementCounterByOne(decrementedValue)
+    }
+
+    companion object {
+        fun createInstance(zikr: Zikr): ZikrDetailsFragment {
+
+            return ZikrDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_ZIKR, zikr)
+                }
+            }
+        }
     }
 }
