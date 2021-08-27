@@ -1,4 +1,4 @@
-package com.misbahah.azkardetails.ui
+package com.misbahah.azkardetails.item
 
 import android.content.Context
 import android.content.SharedPreferences

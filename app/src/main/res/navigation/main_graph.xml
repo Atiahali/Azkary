@@ -6,33 +6,27 @@
     app:startDestination="@id/categoriesFragment">
 
     <fragment
-        android:id="@+id/thekrDetailsFragment"
-        android:name="com.misbahah.zikrdetails.ui.ZikrDetailsFragment"
-        android:label="thekr_details_fragment"
-        tools:layout="@layout/thekr_details_fragment">
-        <argument
-            android:name="thekr"
-            app:argType="com.misbahah.data.model.Zikr" />
-    </fragment>
-    <fragment
         android:id="@+id/categoriesFragment"
         android:label="fragment_categories"
         android:name="com.misbahah.categories.ui.CategoriesFragment"
-        tools:layout="@layout/fragment_categories" >
+        tools:layout="@layout/fragment_categories">
         <action
-            android:id="@+id/action_categoriesFragment_to_azkarListFragment"
-            app:destination="@id/azkarListFragment" />
+            android:id="@+id/action_categoriesFragment_to_azkarDetailsViewPagerFragment"
+            app:destination="@id/azkarDetailsViewPagerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/azkarListFragment"
-        android:name="com.misbahah.azkarlist.DayCategoryAzkarListFragment"
-        android:label="fragment_azkar_list"
-        tools:layout="@layout/fragment_day_category_azkar_list" >
+        android:id="@+id/azkarDetailsViewPagerFragment"
+        android:name="com.misbahah.azkardetails.ui.AzkarDetailsViewPagerFragment"
+        android:label="AzkarDetailsViewPagerFragment">
         <argument
             android:name="categoryId"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="-1" />
         <argument
             android:name="categoryName"
             app:argType="string" />
+        <argument
+            android:name="zikrIndex"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

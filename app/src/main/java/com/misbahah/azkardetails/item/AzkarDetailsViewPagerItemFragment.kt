@@ -1,4 +1,4 @@
-package com.misbahah.azkardetails.ui
+package com.misbahah.azkardetails.item
 
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +8,8 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.misbahah.R
-import com.misbahah.categories.ui.CategoriesFragmentDirections
 import com.misbahah.data.model.Zikr
 import com.misbahah.databinding.FragmentAzkarDetailsViewPagerItemBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 private const val ARG_ZIKR = "arg_zikr"
 
 @AndroidEntryPoint
-class ZikrDetailsFragment : Fragment() {
+class AzkarDetailsViewPagerItemFragment : Fragment() {
 
     private val mViewModel by viewModels<AzkarDetailsViewPagerItemViewModel>()
 
@@ -101,9 +97,9 @@ class ZikrDetailsFragment : Fragment() {
     }
 
     companion object {
-        fun createInstance(zikr: Zikr): ZikrDetailsFragment {
+        fun createInstance(zikr: Zikr): AzkarDetailsViewPagerItemFragment {
 
-            return ZikrDetailsFragment().apply {
+            return AzkarDetailsViewPagerItemFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_ZIKR, zikr)
                 }
