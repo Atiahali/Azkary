@@ -1,4 +1,4 @@
-package com.misbahah.categories.ui
+package com.misbahah.daysazkar
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.misbahah.categories.ui.CategoriesFragmentDirections
 import com.misbahah.data.model.Category
 import com.misbahah.databinding.ItemCategoryBinding
 
@@ -43,7 +44,10 @@ class DayAzkarRecyclerAdapter :
 
         private fun navigateToAzkarListFragment(category: Category, view: View) {
             val direction =
-                CategoriesFragmentDirections.actionCategoriesFragmentToAzkarListFragment(category.id, category.categoryName)
+                CategoriesFragmentDirections.actionCategoriesFragmentToAzkarDetailsViewPagerFragment(
+                    category.id,
+                    category.categoryName
+                )
             view.findNavController().navigate(direction)
         }
 

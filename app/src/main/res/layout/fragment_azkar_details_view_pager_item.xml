@@ -11,11 +11,11 @@
 
         <variable
             name="thekrDetailsFragment"
-            type="com.misbahah.zikrdetails.ui.ZikrDetailsFragment" />
+            type="com.misbahah.azkardetails.ui.ZikrDetailsFragment" />
 
         <variable
             name="model"
-            type="com.misbahah.zikrdetails.ui.ZikrDetailsViewModel" />
+            type="com.misbahah.azkardetails.ui.AzkarDetailsViewPagerItemViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

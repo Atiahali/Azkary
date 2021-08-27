@@ -72,7 +72,7 @@
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_4sdp"
+                android:layout_height="@dimen/_3sdp"
                 android:layout_gravity="bottom"
                 android:background="@android:color/darker_gray" />
         </LinearLayout>

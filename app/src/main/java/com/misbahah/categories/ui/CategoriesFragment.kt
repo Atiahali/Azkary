@@ -51,7 +51,7 @@ class CategoriesFragment : Fragment() {
 
     private fun getTabTitle(position: Int): String? {
         return when (position) {
-            OPEN_AZKAR_PAGE_INDEX -> getString(R.string.open_azkar_title)
+            OPEN_AZKAR_PAGE_INDEX -> getString(R.string.various_azkar_title)
             TIME_BOUND_AZKAR_PAGE_INDEX -> getString(R.string.time_bound_azkar_title)
             else -> null
         }
