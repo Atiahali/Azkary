@@ -14,9 +14,9 @@ import javax.inject.Inject
 class AzkarDetailsViewPagerViewModel @Inject constructor(
     private val repository: AzkarDetailsViewPagerRepository
 ) : ViewModel() {
-    private var mutableStateFlow: MutableStateFlow<List<Zikr>?> = MutableStateFlow(null)
+    private var mutableStateFlow: MutableStateFlow<List<Zikr>> = MutableStateFlow(emptyList())
 
-    val stateFlow: StateFlow<List<Zikr>?> = mutableStateFlow
+    val stateFlow: StateFlow<List<Zikr>> = mutableStateFlow
 
     fun getAzkarByCategoryId(categoryId: Int) {
         viewModelScope.launch {

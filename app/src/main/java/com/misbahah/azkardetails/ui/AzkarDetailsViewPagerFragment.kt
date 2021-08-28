@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.misbahah.databinding.FragmentAzkarDetailsViewPagerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 const val VARIOUS_AZKAR_CATEGORY = -1
@@ -42,22 +45,24 @@ class AzkarDetailsViewPagerFragment : Fragment() {
 
         initView()
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect {
-                val adapter = AzkarDetailsViewPagerAdapter(
-                    this@AzkarDetailsViewPagerFragment,
-                    it
-                )
-
-                binding.viewPager.adapter = adapter
-
-                if (binding.viewPager.adapter != null) {
-                    if (args.zikrIndex >= 1 && savedInstanceState == null)
-                        binding.viewPager.setCurrentItem(args.zikrIndex, false)
-                } else {
-                    Timber.e(
-                        IllegalStateException("onViewCreated: view pager adapter is null"),
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow.collect {
+                    val adapter = AzkarDetailsViewPagerAdapter(
+                        this@AzkarDetailsViewPagerFragment,
+                        it
                     )
+
+                    binding.viewPager.adapter = adapter
+
+                    if (binding.viewPager.adapter != null) {
+                        if (args.zikrIndex >= 1 && savedInstanceState == null)
+                            binding.viewPager.setCurrentItem(args.zikrIndex, false)
+                    } else {
+                        Timber.e(
+                            IllegalStateException("onViewCreated: view pager adapter is null"),
+                        )
+                    }
                 }
             }
         }
