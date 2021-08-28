@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.misbahah.data.model.Zikr
 import com.misbahah.databinding.AzkarListItemBinding
 
-class DayCategoryAzkarRecyclerAdapter(private val clickListener: OnVariousAzkarItemClickListener) :
-    ListAdapter<Zikr, DayCategoryAzkarRecyclerAdapter.DayCategoryAzkarViewHolder>(
+class VariousAzkarRecyclerAdapter(private val clickListener: OnVariousAzkarItemClickListener) :
+    ListAdapter<Zikr, VariousAzkarRecyclerAdapter.VariousAzkarViewHolder>(
         DayCategoryAzkarDiffCallback()
     ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayCategoryAzkarViewHolder {
-        return DayCategoryAzkarViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VariousAzkarViewHolder {
+        return VariousAzkarViewHolder(
             AzkarListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -25,13 +25,13 @@ class DayCategoryAzkarRecyclerAdapter(private val clickListener: OnVariousAzkarI
         )
     }
 
-    override fun onBindViewHolder(holder: DayCategoryAzkarViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: VariousAzkarViewHolder, position: Int) {
         val zikr = getItem(position)
         val isLastItem = currentList.lastOrNull() == zikr
         holder.bind(zikr, isLastItem, position)
     }
 
-    class DayCategoryAzkarViewHolder(
+    class VariousAzkarViewHolder(
         private val binding: AzkarListItemBinding,
         private val clickListener: OnVariousAzkarItemClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -45,7 +45,7 @@ class DayCategoryAzkarRecyclerAdapter(private val clickListener: OnVariousAzkarI
                     divider.visibility = View.VISIBLE
                 executePendingBindings()
                 setClickListener {
-                    this@DayCategoryAzkarViewHolder.clickListener.onItemClick(
+                    this@VariousAzkarViewHolder.clickListener.onItemClick(
                         binding.zikr!!,
                         position
                     )
