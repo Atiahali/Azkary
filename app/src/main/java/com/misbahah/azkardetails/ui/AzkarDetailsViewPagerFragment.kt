@@ -9,12 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.misbahah.data.db.CategoryDao
 import com.misbahah.databinding.FragmentAzkarDetailsViewPagerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
-import javax.inject.Inject
 
 const val VARIOUS_AZKAR_CATEGORY = -1
 
@@ -27,8 +25,14 @@ class AzkarDetailsViewPagerFragment : Fragment() {
 
     private val args by navArgs<AzkarDetailsViewPagerFragmentArgs>()
 
-    @Inject
-    lateinit var dao: CategoryDao
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (args.categoryId != VARIOUS_AZKAR_CATEGORY) {
+            viewModel.getAzkarByCategoryId(args.categoryId)
+        } else {
+            viewModel.getVariousAzkar()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,29 +42,22 @@ class AzkarDetailsViewPagerFragment : Fragment() {
 
         initView()
 
-        if (args.categoryId != VARIOUS_AZKAR_CATEGORY) {
-            viewModel.getAzkarByCategoryId(args.categoryId)
-        } else {
-            viewModel.getVariousAzkar()
-        }
-
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect {
-                if (it != null) {
-                    binding.viewPager.adapter =
-                        AzkarDetailsViewPagerAdapter(
-                            this@AzkarDetailsViewPagerFragment,
-                            it
-                        )
-                    if (binding.viewPager.adapter != null) {
-                        if (args.zikrIndex >= 1)
-                            binding.viewPager.currentItem = args.zikrIndex
-                    } else {
-                        Timber.e(
-                            IllegalStateException("onViewCreated: view pager adapter is null"),
-                        )
-                    }
+                val adapter = AzkarDetailsViewPagerAdapter(
+                    this@AzkarDetailsViewPagerFragment,
+                    it
+                )
+
+                binding.viewPager.adapter = adapter
+
+                if (binding.viewPager.adapter != null) {
+                    if (args.zikrIndex >= 1 && savedInstanceState == null)
+                        binding.viewPager.setCurrentItem(args.zikrIndex, false)
+                } else {
+                    Timber.e(
+                        IllegalStateException("onViewCreated: view pager adapter is null"),
+                    )
                 }
             }
         }
@@ -68,7 +65,7 @@ class AzkarDetailsViewPagerFragment : Fragment() {
         return binding.root
     }
 
-    fun initView() {
+    private fun initView() {
         binding.toolbarText.text = args.categoryName
         binding.toolbar.setNavigationOnClickListener { view ->
             view.findNavController().navigateUp()
