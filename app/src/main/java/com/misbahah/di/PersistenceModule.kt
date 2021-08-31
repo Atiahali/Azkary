@@ -7,7 +7,7 @@ import androidx.room.Room
 import com.misbahah.data.db.AppDatabase
 import com.misbahah.data.db.CategoryDao
 import com.misbahah.data.db.ZikrDao
-import com.misbahah.utilities.MAIN_ACTIVITY_PREFS
+import com.misbahah.utilities.APPLICATION_PREFS
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,6 +41,6 @@ object PersistenceModule {
     @Provides
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences(MAIN_ACTIVITY_PREFS, Context.MODE_PRIVATE)
+        context.getSharedPreferences(APPLICATION_PREFS, Context.MODE_PRIVATE)
 
 }
