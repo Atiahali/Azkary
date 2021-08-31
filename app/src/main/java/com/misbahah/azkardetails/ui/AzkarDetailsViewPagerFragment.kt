@@ -45,6 +45,16 @@ class AzkarDetailsViewPagerFragment : Fragment() {
 
         initView()
 
+        viewModel.currentItemIndex.observe(viewLifecycleOwner) {
+            if (binding.viewPager.adapter != null) {
+                binding.viewPager.setCurrentItem(it, false)
+            } else {
+                Timber.e(
+                    IllegalStateException("onViewCreated: view pager adapter is null"),
+                )
+            }
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect {
@@ -54,20 +64,22 @@ class AzkarDetailsViewPagerFragment : Fragment() {
                     )
 
                     binding.viewPager.adapter = adapter
-
-                    if (binding.viewPager.adapter != null) {
-                        if (args.zikrIndex >= 1 && savedInstanceState == null)
-                            binding.viewPager.setCurrentItem(args.zikrIndex, false)
-                    } else {
-                        Timber.e(
-                            IllegalStateException("onViewCreated: view pager adapter is null"),
-                        )
+                    if (args.zikrIndex >= 1
+                        && (viewModel.currentItemIndex.value!! == args.zikrIndex
+                                || viewModel.currentItemIndex.value!! == 0)
+                    ) {
+                        viewModel.setCurrentItem(args.zikrIndex)
                     }
                 }
             }
         }
 
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        viewModel.setCurrentItem(binding.viewPager.currentItem)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initView() {
