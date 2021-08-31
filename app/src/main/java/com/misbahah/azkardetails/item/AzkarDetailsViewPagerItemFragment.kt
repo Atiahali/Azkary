@@ -73,9 +73,9 @@ class AzkarDetailsViewPagerItemFragment : Fragment() {
     }
 
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    override fun onDestroyView() {
+        super.onDestroyView()
         mViewModel.setCurrentTimeByZikrName(binding.timer.text.toString().toInt(), zikr)
-        super.onSaveInstanceState(outState)
     }
 
 

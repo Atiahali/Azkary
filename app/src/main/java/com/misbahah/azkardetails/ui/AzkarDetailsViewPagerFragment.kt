@@ -56,7 +56,7 @@ class AzkarDetailsViewPagerFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.stateFlow.collect {
                     val adapter = AzkarDetailsViewPagerAdapter(
                         this@AzkarDetailsViewPagerFragment,
