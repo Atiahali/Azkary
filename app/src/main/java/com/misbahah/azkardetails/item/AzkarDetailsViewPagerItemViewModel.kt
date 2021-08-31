@@ -2,48 +2,55 @@ package com.misbahah.azkardetails.item
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.misbahah.R
+import com.misbahah.data.model.Zikr
+import com.misbahah.di.IODispatcher
 import com.misbahah.utilities.RingtoneManager
-import com.misbahah.utilities.TOP_TIMES_OF_ZIKR_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AzkarDetailsViewPagerItemViewModel  @Inject constructor(
+class AzkarDetailsViewPagerItemViewModel @Inject constructor(
     private val ringtoneManager: RingtoneManager,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    @IODispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _topTimes = MutableLiveData<Long>(getTopValue())
-    private val _currentTime = MutableLiveData<Long>()
+    private val _currentTime = MutableLiveData<Int>()
 
-    val topTimes: LiveData<Long> = _topTimes
-    val currentTime: LiveData<Long> = _currentTime
+    val currentTime: LiveData<Int> = _currentTime
 
-    fun incrementCounterByOne(context: Context, incrementedValue: Long) {
+    fun incrementCounterByOne(incrementedValue: Int) {
         _currentTime.value = incrementedValue
-        updateTopTimes(context, incrementedValue)
+    }
+
+    fun setCurrentTimeByZikrName(currentTime: Int, zikr: Zikr) {
+        viewModelScope.launch(ioDispatcher) {
+            sharedPreferences.edit {
+                putInt(zikr.name, currentTime)
+                _currentTime.postValue(currentTime)
+            }
+        }
+    }
+
+    fun getCurrentTimeByZikrName(zikr: Zikr) {
+        _currentTime.value = sharedPreferences.getInt(zikr.name, 0)
     }
 
     fun decrementCounterByOne(decrementedValue: Long) {
-        if (decrementedValue >= 0) _currentTime.value = decrementedValue
+//        if (decrementedValue >= 0) _currentTime.value = decrementedValue
     }
 
-    private fun updateTopTimes(context: Context, currentValue: Long) {
-        if (currentValue % 100 == 0L) {
-            ringtoneManager.playDoneRingtone(context)
-        }
-
-        val topTimes = getTopValue()
-        if (currentValue > topTimes) {
-            this._topTimes.value = currentValue
-            sharedPreferences.edit()
-                .putLong(TOP_TIMES_OF_ZIKR_KEY, currentValue)
-                .apply()
-        }
+    fun playDoneRingtoneWithVibration(context: Context) {
+        ringtoneManager.playDoneRingtoneWithVibration(context, R.raw.garas)
     }
 
-    fun getTopValue(): Long = sharedPreferences.getLong(TOP_TIMES_OF_ZIKR_KEY, 0)
 }

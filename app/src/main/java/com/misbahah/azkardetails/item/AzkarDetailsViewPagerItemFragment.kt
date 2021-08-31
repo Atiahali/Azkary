@@ -5,16 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.misbahah.data.model.Zikr
 import com.misbahah.databinding.FragmentAzkarDetailsViewPagerItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+
 private const val ARG_ZIKR = "arg_zikr"
+private const val ARG_ITEM_INITIALIZED_BEFORE = "arg_item_initialized_before"
 
 @AndroidEntryPoint
 class AzkarDetailsViewPagerItemFragment : Fragment() {
@@ -23,17 +22,14 @@ class AzkarDetailsViewPagerItemFragment : Fragment() {
 
     private lateinit var binding: FragmentAzkarDetailsViewPagerItemBinding
 
-    private lateinit var counterTextView: TextView
-    private lateinit var topTimesTextView: TextView
-    private lateinit var progressBar: ProgressBar
-
-    private var zikr: Zikr? = null
+    private lateinit var zikr: Zikr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             zikr = it.getParcelable(ARG_ZIKR)!!
         }
+        mViewModel.getCurrentTimeByZikrName(zikr)
     }
 
     override fun onCreateView(
@@ -45,62 +41,52 @@ class AzkarDetailsViewPagerItemFragment : Fragment() {
 
         initViews()
 
-        binding.textView.text = zikr?.name
+//        mViewModel.setTextSizePrefs(binding.zikrNameTextView.textSize)
 
-        Log.i("TAG", "onCreateView:d ${zikr?.name}")
-
-        setUpProgressBar(mViewModel.getTopValue())
+        mViewModel.currentTime.observe(requireActivity(), { currentValue: Int ->
+            binding.timer.text = currentValue.toString()
+            if (zikr.repeatingNumber > 0)
+                binding.progressBar.progress = currentValue.toBigInteger().toFloat()
+        })
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        mViewModel.currentTime.observe(viewLifecycleOwner, { currentValue: Long ->
-            counterTextView.text = currentValue.toString()
-            progressBar.progress = currentValue.toBigInteger().toInt()
-        })
-
-
-    }
 
     private fun initViews() {
         binding.thekrDetailsFragment = this
         binding.model = mViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.currentTime = mViewModel.currentTime.value?.toInt() ?: -1
-
-        counterTextView = binding.timer
-        topTimesTextView = binding.topTimes
-        progressBar = binding.progressBar
+        binding.zikr = zikr
     }
 
-    private fun setUpProgressBar(topValue: Long) {
-        try {
-            progressBar.max = topValue.toInt()
-            progressBar.progress = counterTextView.text.toString().toInt()
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+    fun incrementCounterByOne() {
+        val incrementedValue = (binding.timer.text.toString().toInt() + 1)
+        if (zikr.repeatingNumber <= 0) {
+            mViewModel.incrementCounterByOne(incrementedValue)
+            if (incrementedValue % 100 == 0) {
+                mViewModel.playDoneRingtoneWithVibration(requireContext())
+            }
+        }
+        if (incrementedValue <= zikr.repeatingNumber) {
+            mViewModel.incrementCounterByOne(incrementedValue)
+            if (incrementedValue == zikr.repeatingNumber) {
+                mViewModel.playDoneRingtoneWithVibration(requireContext())
+            }
         }
     }
 
 
-    fun incrementCounterByOne() {
-        val incrementedValue = (counterTextView.text.toString().toInt() + 1).toLong()
-
-        mViewModel.incrementCounterByOne(requireContext(), incrementedValue)
+    override fun onDestroyView() {
+        mViewModel.setCurrentTimeByZikrName(binding.timer.text.toString().toInt(), zikr)
+        super.onDestroyView()
     }
 
-    fun decrementCounterByOne() {
-        val decrementedValue = (counterTextView.text.toString().toInt() - 1).toLong()
-        mViewModel.decrementCounterByOne(decrementedValue)
-    }
 
     companion object {
         fun createInstance(zikr: Zikr): AzkarDetailsViewPagerItemFragment {
-
             return AzkarDetailsViewPagerItemFragment().apply {
-                arguments = Bundle().apply {
+                arguments = Bundle(1).apply {
                     putParcelable(ARG_ZIKR, zikr)
                 }
             }
