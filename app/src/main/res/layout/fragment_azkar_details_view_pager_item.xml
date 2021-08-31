@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="currentTime"
-            type="Integer" />
+            name="zikr"
+            type="com.misbahah.data.model.Zikr" />
 
         <variable
             name="thekrDetailsFragment"
@@ -18,94 +18,95 @@
             type="com.misbahah.azkardetails.item.AzkarDetailsViewPagerItemViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:orientation="vertical"
+        android:padding="@dimen/_12sdp">
 
-        <TextView
-            android:id="@+id/textView3"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="أستغفر الله وأتوب إليه"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="40sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/top_value_text"
-            android:textSize="@dimen/top_value_text_size"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-        <TextView
-            android:id="@+id/topTimes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@{Long.toString(model.topTimes)}"
-            android:textSize="@dimen/top_value_text_size"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/textView3"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@style/CircularDeterminateProgressBar"
-            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center"
-            android:onClick="@{() -> thekrDetailsFragment.incrementCounterByOne()}"
-            app:layout_constraintBottom_toTopOf="@+id/button_decr"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topTimes"
-            app:layout_constraintVertical_bias="1.0" />
+            android:layout_weight="3">
 
-        <TextView
-            android:id="@+id/timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/timer_first_value"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
-            app:layout_constraintEnd_toEndOf="@+id/progress_bar"
-            app:layout_constraintStart_toStartOf="@+id/progress_bar"
-            app:layout_constraintTop_toTopOf="@+id/progress_bar" />
+            <TextView
+                android:id="@+id/zikrNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="@{zikr.name}"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="@dimen/_30ssp"
+                tools:text="أستغفر الله وأتوب إليه" />
 
-        <Button
-            android:id="@+id/button_incr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> thekrDetailsFragment.incrementCounterByOne()}"
-            android:text="@string/plus_one"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/progress_bar"
-            app:layout_constraintTop_toBottomOf="@+id/progress_bar"
-            app:layout_constraintVertical_bias="1.0" />
+        </ScrollView>
 
-        <Button
-            android:id="@+id/button_decr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> thekrDetailsFragment.decrementCounterByOne()}"
-            android:text="@string/minus_one"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_incr"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:onClick="@{() -> thekrDetailsFragment.incrementCounterByOne()}">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/repeatingNumber"
+                repeatingNumber="@{zikr.repeatingNumber}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="@dimen/_20ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="مرات تكرار الذكر: 5" />
+
+            <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                android:id="@+id/progress_bar"
+                repeatingNumber="@{zikr.repeatingNumber}"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                app:cpb_progressbar_color="?attr/colorPrimary"
+                app:cpb_progressbar_width="@dimen/_7sdp"
+                app:cpb_round_border="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/repeatingNumber" />
+
+
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{String.valueOf(model.currentTime.intValue())}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="@dimen/_35ssp"
+                android:textStyle="bold"
+                tools:text="5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/repeatingNumber" />
+
+<!--            <Button-->
+<!--                android:id="@+id/increaseTextSize"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:onClick="@{() -> thekrDetailsFragment.incrementCounterByOne()}"-->
+<!--                android:text="@string/plus_one"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/decreaseTextSize"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:onClick="@{() -> thekrDetailsFragment.decrementCounterByOne()}"-->
+<!--                android:text="@string/minus_one"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
