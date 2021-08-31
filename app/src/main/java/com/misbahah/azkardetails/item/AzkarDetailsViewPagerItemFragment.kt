@@ -1,7 +1,6 @@
 package com.misbahah.azkardetails.item
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 private const val ARG_ZIKR = "arg_zikr"
-private const val ARG_ITEM_INITIALIZED_BEFORE = "arg_item_initialized_before"
 
 @AndroidEntryPoint
 class AzkarDetailsViewPagerItemFragment : Fragment() {
@@ -40,8 +38,6 @@ class AzkarDetailsViewPagerItemFragment : Fragment() {
             FragmentAzkarDetailsViewPagerItemBinding.inflate(inflater, container, false)
 
         initViews()
-
-//        mViewModel.setTextSizePrefs(binding.zikrNameTextView.textSize)
 
         mViewModel.currentTime.observe(requireActivity(), { currentValue: Int ->
             binding.timer.text = currentValue.toString()

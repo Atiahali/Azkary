@@ -45,10 +45,6 @@ class AzkarDetailsViewPagerItemViewModel @Inject constructor(
         _currentTime.value = sharedPreferences.getInt(zikr.name, 0)
     }
 
-    fun decrementCounterByOne(decrementedValue: Long) {
-//        if (decrementedValue >= 0) _currentTime.value = decrementedValue
-    }
-
     fun playDoneRingtoneWithVibration(context: Context) {
         ringtoneManager.playDoneRingtoneWithVibration(context, R.raw.garas)
     }
