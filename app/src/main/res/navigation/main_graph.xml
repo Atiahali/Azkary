@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_categories">
         <action
             android:id="@+id/action_categoriesFragment_to_azkarDetailsViewPagerFragment"
-            app:destination="@id/azkarDetailsViewPagerFragment" />
+            app:destination="@id/azkarDetailsViewPagerFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/azkarDetailsViewPagerFragment"
