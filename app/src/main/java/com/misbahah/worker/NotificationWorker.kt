@@ -17,15 +17,14 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class NotificationWorker(private val context: Context, params: WorkerParameters) :
-    Worker(context, params) {
+    CoroutineWorker(context, params) {
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
 
         val sharedPreferences = this.applicationContext
             .getSharedPreferences(WORKER_PREFERECES, Context.MODE_PRIVATE)
         val isFirstRun = sharedPreferences.getInt(FIRST_RUN_KEY, NOT_FIRST_RUN) == FIRST_RUN
 
-        Timber.i("itw doWork $isFirstRun")
 
         if (isFirstRun) {
             sharedPreferences.edit {
