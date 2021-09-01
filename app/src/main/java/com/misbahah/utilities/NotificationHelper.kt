@@ -27,10 +27,11 @@ fun makeStatusNotification(message: String, context: Context, channel: Notificat
 
     // Create the notification
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.drawable.ic_tasbih)
+        .setSmallIcon(R.mipmap.ic_launcher_foreground)
         .setContentTitle(NOTIFICATION_TITLE)
         .setContentText(message)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setAutoCancel(true)
         .setVibrate(LongArray(1))
         .setCategory(NotificationCompat.CATEGORY_ALARM)
 
