@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="zikr"
             type="com.misbahah.data.model.Zikr" />
@@ -21,30 +23,53 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/_12sdp">
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3">
 
-            <TextView
-                android:id="@+id/zikrNameTextView"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:text="@{zikr.name}"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="@dimen/_30ssp"
-                tools:text="أستغفر الله وأتوب إليه" />
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/zikrNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{zikr.name}"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="@dimen/_25ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="أستغفر الله وأتوب إليه" />
+
+                <TextView
+                    android:id="@+id/daleelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:text="@{zikr.daleel}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="?attr/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/zikrNameTextView"
+                    tools:text="الشاهد" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:onClick="@{() -> thekrDetailsFragment.incrementCounterByOne()}">
 
             <TextView
@@ -88,24 +113,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/repeatingNumber" />
-
-<!--            <Button-->
-<!--                android:id="@+id/increaseTextSize"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:onClick="@{() -> thekrDetailsFragment.incrementCounterByOne()}"-->
-<!--                android:text="@string/plus_one"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/decreaseTextSize"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:onClick="@{() -> thekrDetailsFragment.decrementCounterByOne()}"-->
-<!--                android:text="@string/minus_one"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
