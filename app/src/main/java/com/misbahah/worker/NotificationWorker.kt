@@ -5,26 +5,31 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.hilt.work.HiltWorker
+import androidx.lifecycle.LifecycleOwner
 import androidx.work.*
 import com.misbahah.main.ui.MainActivity
 import com.misbahah.utilities.FIRST_RUN_KEY
-import com.misbahah.utilities.WORKER_PREFERECES
 import com.misbahah.utilities.makeStatusNotification
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class NotificationWorker(private val context: Context, params: WorkerParameters) :
-    CoroutineWorker(context, params) {
+@HiltWorker
+class NotificationWorker @AssistedInject constructor(
+    @Assisted private val appContext: Context,
+    @Assisted workerParams: WorkerParameters,
+    private val sharedPreferences: SharedPreferences
+) :
+    CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
 
-        val sharedPreferences = this.applicationContext
-            .getSharedPreferences(WORKER_PREFERECES, Context.MODE_PRIVATE)
         val isFirstRun = sharedPreferences.getInt(FIRST_RUN_KEY, NOT_FIRST_RUN) == FIRST_RUN
-
 
         if (isFirstRun) {
             sharedPreferences.edit {
@@ -32,8 +37,8 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             }
         } else {
             val intent = Intent(applicationContext, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-            makeStatusNotification("لا تنس ذكر الله", context, createChannel(), pendingIntent)
+            val pendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
+            makeStatusNotification("لا تنس ذكر الله", appContext, createChannel(), pendingIntent)
         }
         return Result.success()
     }
@@ -52,16 +57,20 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
     companion object {
 
-        fun startNotificationWorker(_context: Context, appCompatActivity: AppCompatActivity) {
-            val context = _context.applicationContext
-            context.getSharedPreferences(WORKER_PREFERECES, AppCompatActivity.MODE_PRIVATE).edit {
+        fun startNotificationWorker(
+            context: Context,
+            sharedPreferences: SharedPreferences,
+            lifecycleOwner: LifecycleOwner
+        ) {
+            val appContext = context.applicationContext
+            sharedPreferences.edit {
                 putInt(FIRST_RUN_KEY, FIRST_RUN)
             }
 
-            val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(16, TimeUnit.MINUTES)
+            val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(3, TimeUnit.DAYS)
                 .build()
 
-            val workManager = WorkManager.getInstance(context)
+            val workManager = WorkManager.getInstance(appContext)
 
             workManager.enqueueUniquePeriodicWork(
                 "unique",
@@ -69,11 +78,11 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 workRequest
             )
 
-            workManager.getWorkInfoByIdLiveData(workRequest.id).observe(appCompatActivity, {
+            workManager.getWorkInfoByIdLiveData(workRequest.id).observe(lifecycleOwner, {
                 if (it.state == WorkInfo.State.RUNNING)
                     Timber.i(
                         "itw  startNotificationWorker %s",
-                        context.getSharedPreferences(WORKER_PREFERECES, Context.MODE_PRIVATE)
+                        sharedPreferences
                             .getInt(
                                 FIRST_RUN_KEY,
                                 -1
@@ -81,7 +90,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                     )
             })
         }
-
 
         const val NOT_FIRST_RUN = 1
         const val FIRST_RUN = 0
