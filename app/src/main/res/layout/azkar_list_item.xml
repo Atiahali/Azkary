@@ -11,7 +11,7 @@
 
         <variable
             name="zikr"
-            type="com.misbahah.data.model.Zikr" />
+            type="org.azkary.data.model.Zikr" />
     </data>
 
     <androidx.cardview.widget.CardView

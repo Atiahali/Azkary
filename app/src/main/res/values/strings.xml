@@ -1,12 +1,8 @@
 <resources>
-    <string name="app_name">المسبحة</string>
-    <string name="timer_first_value">0</string>
-    <string name="top_value_text">Top Value:</string>
-    <string name="plus_one">+1</string>
-    <string name="minus_one">-1</string>
+    <string name="app_name">أذكاري</string>
     <string name="category_image">Category Image</string>
     <string name="various_azkar_title">أذكار متفرقة</string>
-    <string name="time_bound_azkar_title">أذكار اليوم والليلة</string>
+    <string name="time_bound_azkar_title">الأذكار و الأدعية</string>
     <string name="go_to_zikr_details">Go to zikr details</string>
     <string name="repeating_times">مرات تكرار الذكر: %1$d</string>
 </resources>

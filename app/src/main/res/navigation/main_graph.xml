@@ -2,13 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_graph"
     app:startDestination="@id/categoriesFragment">
 
     <fragment
         android:id="@+id/categoriesFragment"
         android:label="fragment_categories"
-        android:name="com.misbahah.categories.ui.CategoriesFragment"
+        android:name="org.azkary.categories.ui.CategoriesFragment"
         tools:layout="@layout/fragment_categories">
         <action
             android:id="@+id/action_categoriesFragment_to_azkarDetailsViewPagerFragment"
@@ -20,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/azkarDetailsViewPagerFragment"
-        android:name="com.misbahah.azkardetails.ui.AzkarDetailsViewPagerFragment"
+        android:name="org.azkary.azkardetails.ui.AzkarDetailsViewPagerFragment"
         android:label="AzkarDetailsViewPagerFragment">
         <argument
             android:name="categoryId"

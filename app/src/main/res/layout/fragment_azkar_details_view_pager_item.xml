@@ -9,15 +9,15 @@
 
         <variable
             name="zikr"
-            type="com.misbahah.data.model.Zikr" />
+            type="org.azkary.data.model.Zikr" />
 
         <variable
             name="thekrDetailsFragment"
-            type="com.misbahah.azkardetails.item.AzkarDetailsViewPagerItemFragment" />
+            type="org.azkary.azkardetails.item.AzkarDetailsViewPagerItemFragment" />
 
         <variable
             name="model"
-            type="com.misbahah.azkardetails.item.AzkarDetailsViewPagerItemViewModel" />
+            type="org.azkary.azkardetails.item.AzkarDetailsViewPagerItemViewModel" />
     </data>
 
     <LinearLayout
@@ -55,6 +55,7 @@
                     android:layout_margin="@dimen/_5sdp"
                     android:text="@{zikr.daleel}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textSize="@dimen/_20ssp"
                     android:textColor="?attr/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -11,7 +11,7 @@
 
         <variable
             name="category"
-            type="com.misbahah.data.model.Category" />
+            type="org.azkary.data.model.Category" />
     </data>
 
     <androidx.cardview.widget.CardView
