@@ -1,18 +1,14 @@
 package org.azkary.di
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.azkary.data.db.AppDatabase
 import org.azkary.data.db.CategoryDao
 import org.azkary.data.db.ZikrDao
-import org.azkary.utilities.APPLICATION_PREFS
 import javax.inject.Singleton
 
 @Module
@@ -37,9 +33,4 @@ object PersistenceModule {
     @Singleton
     fun provideZikrDao(appDatabase: AppDatabase): ZikrDao =
         appDatabase.zikrDao()
-
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences(APPLICATION_PREFS, Context.MODE_PRIVATE)
 }

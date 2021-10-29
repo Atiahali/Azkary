@@ -1,7 +1,5 @@
 package org.azkary.azkardetails.ui
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,22 +10,21 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.azkary.azkardetails.AzkarDetailsViewPagerRepository
 import org.azkary.data.model.Zikr
+import org.azkary.utilities.DataStoreManager
 import javax.inject.Inject
 
 @HiltViewModel
 class AzkarDetailsViewPagerViewModel @Inject constructor(
     private val repository: AzkarDetailsViewPagerRepository,
-    private val sharedPreferences: SharedPreferences
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     private var mutableStateFlow: MutableStateFlow<List<Zikr>> = MutableStateFlow(emptyList())
     val stateFlow: StateFlow<List<Zikr>> = mutableStateFlow
-        .map {
-            it.forEach {
-                sharedPreferences.edit {
-                    putInt(it.name, 0)
-                }
+        .map { azkar ->
+            azkar.forEach { zikr ->
+                dataStoreManager.setCounter(0, zikr.name)
             }
-            it
+            azkar
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private var _currentItemIndex: MutableLiveData<Int> = MutableLiveData(0)
@@ -53,9 +50,9 @@ class AzkarDetailsViewPagerViewModel @Inject constructor(
         stateFlow.map { azkar ->
             viewModelScope.launch(Dispatchers.IO) {
                 azkar.forEach { zikr ->
-                    sharedPreferences.edit {
+//                    sharedPreferences.edit {
 //                        remove(zikr.name)
-                    }
+//                    }
                 }
             }
         }

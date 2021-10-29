@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.azkary.R
+import org.azkary.utilities.DataStoreManager
 import org.azkary.worker.NotificationWorker
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var navHostFragment: NavHostFragment
 
     @Inject
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var dataStoreManager: DataStoreManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_App)
@@ -33,6 +34,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun startNotificationWorker() {
-        NotificationWorker.startNotificationWorker(applicationContext, sharedPreferences, this)
+        NotificationWorker.startNotificationWorker(this, dataStoreManager)
     }
 }

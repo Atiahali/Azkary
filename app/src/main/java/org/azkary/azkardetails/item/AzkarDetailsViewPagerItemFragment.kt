@@ -27,7 +27,7 @@ class AzkarDetailsViewPagerItemFragment : Fragment() {
         arguments?.let {
             zikr = it.getParcelable(ARG_ZIKR)!!
         }
-        mViewModel.getCurrentTimeByZikrName(zikr)
+        mViewModel.setZikr(zikr)
     }
 
     override fun onCreateView(
@@ -75,7 +75,7 @@ class AzkarDetailsViewPagerItemFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mViewModel.setCurrentTimeByZikrName(binding.timer.text.toString().toInt(), zikr)
+        mViewModel.setCurrentTimeByZikrName(binding.timer.text.toString().toInt())
     }
 
 

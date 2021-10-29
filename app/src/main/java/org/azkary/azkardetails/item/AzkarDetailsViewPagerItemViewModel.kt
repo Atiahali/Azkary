@@ -1,48 +1,54 @@
 package org.azkary.azkardetails.item
 
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.azkary.R
 import org.azkary.data.model.Zikr
 import org.azkary.di.IODispatcher
+import org.azkary.utilities.DataStoreManager
 import org.azkary.utilities.RingtoneManager
 import javax.inject.Inject
 
 @HiltViewModel
 class AzkarDetailsViewPagerItemViewModel @Inject constructor(
     private val ringtoneManager: RingtoneManager,
-    private val sharedPreferences: SharedPreferences,
+    private val dataStoreManager: DataStoreManager,
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _currentTime = MutableLiveData<Int>()
+    private var zikr: Zikr? = null
+
+    private var _currentTime = MutableLiveData<Int>()
 
     val currentTime: LiveData<Int> = _currentTime
 
-    fun incrementCounterByOne(incrementedValue: Int) {
-        _currentTime.value = incrementedValue
-    }
-
-    fun setCurrentTimeByZikrName(currentTime: Int, zikr: Zikr) {
-        viewModelScope.launch(ioDispatcher) {
-            sharedPreferences.edit {
-                putInt(zikr.name, currentTime)
-                _currentTime.postValue(currentTime)
+    fun setZikr(zikr: Zikr) {
+        this.zikr = zikr
+        viewModelScope.launch {
+            dataStoreManager.getCounger(zikr.name).collect {
+                _currentTime.value = it
             }
         }
     }
 
-    fun getCurrentTimeByZikrName(zikr: Zikr) {
-        _currentTime.value = sharedPreferences.getInt(zikr.name, 0)
+    fun incrementCounterByOne(incrementedValue: Int) {
+        viewModelScope.launch(ioDispatcher) {
+            dataStoreManager.setCounter(incrementedValue, zikr!!.name)
+        }
+    }
+
+    fun setCurrentTimeByZikrName(currentTime: Int) {
+        viewModelScope.launch(ioDispatcher) {
+            dataStoreManager.setCounter(currentTime, zikr!!.name)
+        }
     }
 
     fun playDoneRingtoneWithVibration(context: Context) {
