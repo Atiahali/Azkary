@@ -5,41 +5,39 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
-import androidx.core.content.edit
+import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.azkary.main.ui.MainActivity
-import org.azkary.utilities.FIRST_RUN_KEY
+import org.azkary.utilities.DataStoreManager
 import org.azkary.utilities.makeStatusNotification
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class NotificationWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val sharedPreferences: SharedPreferences
+    private val dataStoreManager: DataStoreManager
 ) :
     CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-
-        val isFirstRun = sharedPreferences.getInt(FIRST_RUN_KEY, NOT_FIRST_RUN) == FIRST_RUN
-
+        val isFirstRun = dataStoreManager.isFirstRun()
         if (isFirstRun) {
-            sharedPreferences.edit {
-                putInt(FIRST_RUN_KEY, NOT_FIRST_RUN)
-            }
+                dataStoreManager.setIsFirstRun(false)
         } else {
             val intent = Intent(applicationContext, MainActivity::class.java)
             val pendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
             makeStatusNotification("لا تنس ذكر الله", appContext, createChannel(), pendingIntent)
         }
+
         return Result.success()
     }
 
@@ -59,12 +57,13 @@ class NotificationWorker @AssistedInject constructor(
 
         fun startNotificationWorker(
             context: Context,
-            sharedPreferences: SharedPreferences,
-            lifecycleOwner: LifecycleOwner
+            dataStoreManager: DataStoreManager
         ) {
             val appContext = context.applicationContext
-            sharedPreferences.edit {
-                putInt(FIRST_RUN_KEY, FIRST_RUN)
+
+            runBlocking {
+                dataStoreManager
+                    .setIsFirstRun(true)
             }
 
             val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(3, TimeUnit.DAYS)
@@ -77,22 +76,8 @@ class NotificationWorker @AssistedInject constructor(
                 ExistingPeriodicWorkPolicy.REPLACE,
                 workRequest
             )
-
-//            workManager.getWorkInfoByIdLiveData(workRequest.id).observe(lifecycleOwner, {
-//                if (it.state == WorkInfo.State.RUNNING)
-//                    Timber.i(
-//                        "itw  startNotificationWorker %s",
-//                        sharedPreferences
-//                            .getInt(
-//                                FIRST_RUN_KEY,
-//                                -1
-//                            )
-//                    )
-//            })
         }
 
-        const val NOT_FIRST_RUN = 1
-        const val FIRST_RUN = 0
         const val VERBOSE_NOTIFICATION_CHANNEL_NAME =
             "Check Last Run"
         const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION =
