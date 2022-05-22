@@ -1,7 +1,7 @@
 package org.azkary.daysazkar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +14,8 @@ import javax.inject.Inject
 class DayAzkarViewModel @Inject constructor(
     private val dayAzkarRepository: DayAzkarRepository
 ) : ViewModel() {
-    private var _categoryList = MutableLiveData<List<Category>>()
-    val categoryList: LiveData<List<Category>> = _categoryList
+    private var _categoryList = mutableStateOf<List<Category>>(emptyList())
+    val categoryList: State<List<Category>> = _categoryList
 
     fun getAllCategories() {
         viewModelScope.launch {
