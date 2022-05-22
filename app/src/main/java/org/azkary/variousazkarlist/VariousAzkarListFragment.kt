@@ -4,33 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.azkary.R
 import org.azkary.categories.ui.CategoriesFragmentDirections
-import org.azkary.data.model.Zikr
 import org.azkary.databinding.FragmentVariousAzkarListBinding
-import timber.log.Timber
 
 @AndroidEntryPoint
-class VariousAzkarListFragment : Fragment(), OnVariousAzkarItemClickListener {
+class VariousAzkarListFragment : Fragment() {
 
     private lateinit var binding: FragmentVariousAzkarListBinding
 
-    private val viewModel by viewModels<VariousAzkarViewModel>()
-    private lateinit var adapter: VariousAzkarRecyclerAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getVariousAzkar()
-    }
+    private val viewModel by viewModels<VariousAzkarViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,36 +29,30 @@ class VariousAzkarListFragment : Fragment(), OnVariousAzkarItemClickListener {
     ): View {
         binding = FragmentVariousAzkarListBinding.inflate(inflater, container, false)
 
-
-        adapter = VariousAzkarRecyclerAdapter(this)
-        binding.recyclerView.adapter = adapter
-        subscribeUi(adapter)
-
-        return binding.root
-    }
-
-    private fun subscribeUi(adapter: VariousAzkarRecyclerAdapter) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.variousAzkarStateFlow.collect { azkar ->
-                    if (azkar.isNotEmpty()) {
-                        adapter.submitList(azkar)
-                    } else {
-                        Timber.e("Azkar list is empty>")
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MdcTheme {
+//                    Todo
+//                    val viewModel: VariousAzkarViewModel = hiltViewModel()
+                    LaunchedEffect(viewModel.variousAzkarStateFlow.value) {
+                        viewModel.getVariousAzkar()
+                    }
+                    VariousAzkarList(variousAzkar = viewModel.variousAzkarStateFlow.value) { position ->
+                        val direction =
+                            CategoriesFragmentDirections.actionCategoriesFragmentToAzkarDetailsViewPagerFragment(
+                                categoryName = getString(R.string.various_azkar_title),
+                                zikrIndex = position
+                            )
+                        findNavController().navigate(direction)
                     }
                 }
             }
         }
-    }
 
-    override fun onItemClick(item: Zikr, position: Int) {
-        val direction =
-            CategoriesFragmentDirections.actionCategoriesFragmentToAzkarDetailsViewPagerFragment(
-                categoryName = getString(R.string.various_azkar_title),
-                zikrIndex = position
-            )
-        findNavController().navigate(direction)
-    }
 
+
+        return binding.root
+    }
 
 }
